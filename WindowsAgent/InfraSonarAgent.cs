@@ -16,7 +16,7 @@ namespace WindowsAgent
 
         public InfraSonarAgent()
         {
-            InitializeComponent();            
+            InitializeComponent();
         }
 
         protected override void OnStart(string[] args)
