@@ -8,11 +8,10 @@ using System.Threading.Tasks;
 
 namespace WindowsAgent.Checks
 {
-    using CheckType = Dictionary<string, object>;
-    using CheckResult = Dictionary<string, Dictionary<string, object>>;
 
     internal class System : Check
     {
+        private const int DefaultCheckInterval = 300;  // Interval in seconds
         private const string _name = "system";        
 
         public override string Name() { return _name; }
@@ -22,12 +21,12 @@ namespace WindowsAgent.Checks
         public override CheckResult Run()
         {
             CheckResult data = new CheckResult();
-            CheckType time = new CheckType();
+            CheckType time = new CheckType("time");
 
-            time["time"] = Stopwatch.GetTimestamp() / Stopwatch.Frequency;
+            time.Set("uptime", Stopwatch.GetTimestamp() / Stopwatch.Frequency);
+            data.Add(time);
 
-
-            return data["time"] = ;
+            return data;
         }
     }
 }

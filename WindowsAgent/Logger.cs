@@ -11,6 +11,7 @@ namespace WindowsAgent
     {
         TokenFound = 2000,
         TokenNotFound = 2001,
+        InvalidTimestamp = 2002,
     }
 
     internal class Logger

@@ -49,6 +49,8 @@
   <ItemGroup>
     <Compile Include="Check.cs" />
     <Compile Include="Checks\System.cs" />
+    <Compile Include="CheckResult.cs" />
+    <Compile Include="CheckType.cs" />
     <Compile Include="Logger.cs" />
     <Compile Include="Config.cs" />
     <Compile Include="ProjectInstaller.cs">
