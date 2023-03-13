@@ -9,24 +9,33 @@ namespace WindowsAgent
 {
     internal class Config
     {
-        readonly String token;
+        private String _token;
+
+        public String GetToken()
+        {
+            return _token;
+        }
+
+        public bool HasToken()
+        {
+            return _token != null;
+        }
 
         public Config()
         {
             try
             {
-                using (var key = Registry.LocalMachine.OpenSubKey("Software\\Wow6432Node\\InfraSonar\\Windows Agent", false))
+                using (var key = Registry.LocalMachine.OpenSubKey("Software\\Cesbit\\InfraSonarAgent", false))
                 {
                     var s = key?.GetValue("Token") as string;
                     if (!string.IsNullOrWhiteSpace(s))
                     {
-                        this.token = s;
+                        _token = s;
                     }
                 }
             }
             catch (Exception)
             {
-
             }
         }
     }

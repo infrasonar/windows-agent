@@ -12,7 +12,7 @@ namespace WindowsAgent
 {
     public partial class InfraSonarAgent : ServiceBase
     {
-        private Config options = new Config();
+        private Config config;
 
         public InfraSonarAgent()
         {
@@ -21,6 +21,11 @@ namespace WindowsAgent
 
         protected override void OnStart(string[] args)
         {
+            config = new Config();
+            if (config.HasToken() == false)
+            {
+                Logger.Write("No token found; Set the HKLM\\Software\\Cesbit\\InfraSonarAgent\\Token registry key", EventLogEntryType.Error, EventId.TokenNotFound);
+            }
         }
 
         protected override void OnStop()

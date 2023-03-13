@@ -14,24 +14,28 @@ namespace WindowsAgent
     {
         public ProjectInstaller()
         {
-            ServiceProcessInstaller simpleServiceProcessInstaller = new ServiceProcessInstaller();
-            ServiceInstaller simpleServiceInstaller = new ServiceInstaller();
+            ServiceProcessInstaller serviceProcessInstaller = new ServiceProcessInstaller();
+            ServiceInstaller serviceInstaller = new ServiceInstaller();
 
             // Set the account properties for the service process.
-            simpleServiceProcessInstaller.Account = ServiceAccount.LocalService;
+            serviceProcessInstaller.Account = ServiceAccount.LocalSystem;
+            serviceProcessInstaller.Username = null;
+            serviceProcessInstaller.Password = null;
 
             // Set the installation properties for the service.
             // The ServiceInstaller.ServiceName must match the
             // ServiceBase.ServiceName set in the service
             // implementation that is installed by this installer.
-            simpleServiceInstaller.ServiceName = "InfraSonarAgent";
-            simpleServiceInstaller.DisplayName = "InfraSonar Windows Agent";
-            simpleServiceInstaller.Description = "This service is used by InfraSonar for collecting monitoring data.";
-            simpleServiceInstaller.StartType = ServiceStartMode.Automatic;
+            serviceInstaller.ServiceName = "InfraSonarAgent";
+            serviceInstaller.DisplayName = "InfraSonar Windows Agent";
+            serviceInstaller.Description = "This service is used by InfraSonar for collecting monitoring data. See https://docs.infrasonar.com/collectors/agents/windows/ for more infromation.";
+            serviceInstaller.StartType = ServiceStartMode.Automatic;
+            serviceInstaller.DelayedAutoStart = true;
+
 
             // Add the installers to the Installer collection.
-            Installers.Add(simpleServiceInstaller);
-            Installers.Add(simpleServiceProcessInstaller);
+            Installers.Add(serviceInstaller);
+            Installers.Add(serviceProcessInstaller);
         }
     }
 }
