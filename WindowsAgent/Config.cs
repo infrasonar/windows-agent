@@ -10,22 +10,46 @@ namespace WindowsAgent
 {
     internal class Config
     {
-        static private String _token = _Config();
+        static private String _authorization = _readAuthorization();
+        static private string _apiUrl = _readApiUrl();
 
         private const string _APPKEY = "Software\\Cesbit\\InfraSonarAgent";
         private const string _CHKKEY = "Software\\Cesbit\\InfraSonarAgent\\Checks";
 
-        static public String GetToken()
+        static public string GetAuthorization()
         {
-            return _token;
+            return _authorization;
+        }
+
+        static public string GetApiUrl()
+        {
+            return _apiUrl;
         }
 
         static public bool HasToken()
         {
-            return _token != null;
+            return _authorization != null;
         }
 
-        static private String _Config()
+        static private string _readApiUrl()
+        {
+            try
+            {
+                using (var key = Registry.LocalMachine.OpenSubKey(_APPKEY, false))
+                {
+                    var s = key?.GetValue("ApiUrl") as string;
+                    if (!string.IsNullOrWhiteSpace(s))
+                    {
+                        s = s.TrimEnd('/');
+                        return s;
+                    }
+                }
+            }
+            catch (Exception) { }
+            return "https://api.infrasonar.com";
+        }
+
+        static private String _readAuthorization()
         {
             try
             {
@@ -34,17 +58,15 @@ namespace WindowsAgent
                     var s = key?.GetValue("Token") as string;
                     if (!string.IsNullOrWhiteSpace(s))
                     {
-                        return s;
+                        return "Bearer " + s;
                     }
                 }
             }
-            catch (Exception)
-            {
-            }
+            catch (Exception) { }
             return null;
         }
 
-        // Return the CheckInterval in Seconds.
+        // Return the CheckInterval in Minutes.
         static public int GetCheckInterval(string checkName, int defaultInterval)
         {
             try
@@ -52,11 +74,12 @@ namespace WindowsAgent
                 using (var key = Registry.LocalMachine.OpenSubKey(_CHKKEY, false))
                 {
                     int interval = Convert.ToInt32(key.GetValue(checkName).ToString());
-                    if (interval < 60 || interval > 3600*24)
+                    if (interval < 0 || interval > 60*24)
                     {
-                        Logger.Write(String.Format("Invalid inteval for {0}; using default", checkName), EventLogEntryType.Information, EventId.InvalidTimestamp);
+                        Logger.Write(String.Format("Invalid interval for {0}; using the default ({1}s)", checkName, defaultInterval), EventLogEntryType.Error, EventId.InvalidTimestamp);
                         return defaultInterval;
                     }
+                    Logger.Write(String.Format("Using interval {1}s for check {0}", interval, checkName), EventLogEntryType.Information, EventId.CustomTimestamp);
                     return interval;
                 }
             }

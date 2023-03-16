@@ -10,16 +10,16 @@ namespace WindowsAgent
     {
         private string _name;
 
-        private Dictionary<string, object> _data;
+        private Dictionary<string, Dictionary<string, object>[]> _data;
         public CheckType(string name)
         {
             _name = name;
-            _data = new Dictionary<string, object>();
+            _data = new Dictionary<string, Dictionary<string, object>[]> ();
         }
 
-        public void Set(string name, object value)
+        public void Set(string name, Dictionary<string, object>[] items)
         {
-            _data[name] = value;
+            _data[name] = items;
         }
 
         public string Name()
@@ -27,7 +27,7 @@ namespace WindowsAgent
             return _name;
         }
 
-        public Dictionary<string, object> Data()
+        public Dictionary<string, Dictionary<string, object>[]> Data()
         {
             return _data;
         }
