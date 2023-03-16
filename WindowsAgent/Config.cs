@@ -76,10 +76,10 @@ namespace WindowsAgent
                     int interval = Convert.ToInt32(key.GetValue(checkName).ToString());
                     if (interval < 0 || interval > 60*24)
                     {
-                        Logger.Write(String.Format("Invalid interval for {0}; using the default ({1}s)", checkName, defaultInterval), EventLogEntryType.Error, EventId.InvalidTimestamp);
+                        Logger.Write(string.Format("Invalid interval for {0}; using the default ({1}s)", checkName, defaultInterval), EventLogEntryType.Error, EventId.InvalidTimestamp);
                         return defaultInterval;
                     }
-                    Logger.Write(String.Format("Using interval {1}s for check {0}", interval, checkName), EventLogEntryType.Information, EventId.CustomTimestamp);
+                    Logger.Write(string.Format("Using interval {1}s for check {0}", interval, checkName), EventLogEntryType.Information, EventId.CustomTimestamp);
                     return interval;
                 }
             }

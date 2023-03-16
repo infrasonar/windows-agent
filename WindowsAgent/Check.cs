@@ -27,7 +27,7 @@ namespace WindowsAgent
             
         }
 
-        private void _sendToHub(string checkKey, string body)
+        private void _sendToHub(string body)
         {            
             var cli = new WebClient();
             
@@ -37,14 +37,14 @@ namespace WindowsAgent
             cli.Headers.Add(HttpRequestHeader.Authorization, Config.GetAuthorization());
             cli.Headers.Add(HttpRequestHeader.AcceptEncoding, "gzip");
 
-            string url = string.Format("{0}/asset/{1}/collector/{2}/check/{3}", Config.GetApiUrl(), InfraSonarAgent.GetAssetId(), InfraSonarAgent.CollectorKey, checkKey);
+            string url = string.Format("{0}/asset/{1}/collector/{2}/check/{3}", Config.GetApiUrl(), InfraSonarAgent.GetAssetId(), InfraSonarAgent.CollectorKey, this.Key());
             try
             {
                 string response = cli.UploadString(url, body);                
             }
             catch (Exception ex)
             {
-                Logger.Write(string.Format("Failed to upload check data ({0}): {1}", checkKey, ex.Message), EventLogEntryType.Error, EventId.UploadFailed);
+                Logger.Write(string.Format("Failed to upload check data ({0}): {1}", this.Key(), ex.Message), EventLogEntryType.Error, EventId.UploadFailed);
             }
         }
 
@@ -65,7 +65,7 @@ namespace WindowsAgent
                     }
                     catch (Exception ex)
                     {
-
+                        Logger.Write(string.Format("Failed to run check ({0}): {1}", this.Key(), ex.Message), EventLogEntryType.Error, EventId.UploadFailed);
                     }
                     
                     
