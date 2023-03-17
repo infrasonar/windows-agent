@@ -17,6 +17,8 @@ namespace WindowsAgent
         AssetNameNotFound = 2010,
         AssignCollectorFailed = 2011,
         AssignKindFailed = 2011,
+        SendCheck = 2012,
+        CheckError = 2013,
     }
 
     internal class Logger

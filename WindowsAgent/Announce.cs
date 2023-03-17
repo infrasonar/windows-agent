@@ -10,7 +10,6 @@ namespace WindowsAgent
 {
     internal class Announce
     {
-
         private class RespContainerId
         {
             [JsonProperty(PropertyName = "containerId")]
@@ -40,8 +39,7 @@ namespace WindowsAgent
                     if (resp.StatusCode == HttpStatusCode.OK)
                     {
                         string json = await resp.Content.ReadAsStringAsync();
-                        RespContainerId res = JsonConvert.DeserializeObject<RespContainerId>(json);
-                        containerId = res.ContainerId;
+                        containerId = JsonConvert.DeserializeObject<RespContainerId>(json).ContainerId;
                     }
                     else
                     {
@@ -59,16 +57,17 @@ namespace WindowsAgent
             {
                 string body = JsonConvert.SerializeObject(new { name = Config.GetAssetName() });
                 string url = string.Format("{0}/container/{1}/asset", Config.GetApiUrl(), containerId);
-                HttpRequestMessage request = new HttpRequestMessage(HttpMethod.Post, url);
-                request.Content = new StringContent(body, Encoding.UTF8, "application/json");
+                HttpRequestMessage request = new HttpRequestMessage(HttpMethod.Post, url)
+                {
+                    Content = new StringContent(body, Encoding.UTF8, "application/json")
+                };
 
                 using (HttpResponseMessage resp = await client.SendAsync(request))
                 {
                     if (resp.StatusCode == HttpStatusCode.Created)
                     {
                         string json = await resp.Content.ReadAsStringAsync();
-                        RespAssetId res = JsonConvert.DeserializeObject<RespAssetId>(json);
-                        assetId = res.AssetId;
+                        assetId = JsonConvert.DeserializeObject<RespAssetId>(json).AssetId;
                     }
                     else
                     {
@@ -106,8 +105,10 @@ namespace WindowsAgent
                 string body = JsonConvert.SerializeObject(new { kind = InfraSonarAgent.AssetKind });
                 string url = string.Format("{0}/asset/{1}/kind", Config.GetApiUrl(), assetId);
                 var method = new HttpMethod("PATCH");
-                HttpRequestMessage request = new HttpRequestMessage(method, url);
-                request.Content = new StringContent(body, Encoding.UTF8, "application/json");
+                HttpRequestMessage request = new HttpRequestMessage(method, url)
+                {
+                    Content = new StringContent(body, Encoding.UTF8, "application/json")
+                };
 
                 using (HttpResponseMessage resp = await client.SendAsync(request))
                 {

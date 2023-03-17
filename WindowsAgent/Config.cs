@@ -8,6 +8,7 @@ namespace WindowsAgent
     {
         static private readonly string _authorization = ReadAuthorization();
         static private readonly string _apiUrl = ReadApiUrl();
+        static private readonly bool _debug = ReadDebug();
         static private string _assetName = ReadAssetName();
         static private ulong _assetId = ReadAssetId();
 
@@ -70,6 +71,11 @@ namespace WindowsAgent
             {
                 Logger.Write(string.Format("Failed to write AssetName to registry: {0}", ex.Message), EventLogEntryType.Warning, EventId.AssetNameRegistry);
             }
+        }
+
+        static public bool IsDebug()
+        {
+            return _debug;
         }
 
         static public string GetAssetName()
@@ -205,6 +211,20 @@ namespace WindowsAgent
             }
             catch (Exception) { }
             return assetId;
+        }
+
+        static private bool ReadDebug()
+        {
+            int debug = 0;
+            try
+            {
+                using (var key = Registry.LocalMachine.OpenSubKey(_APPKEY, false))
+                {
+                    debug = Convert.ToInt32(key.GetValue("Debug", 0).ToString());
+                }
+            }
+            catch (Exception) { }
+            return debug != 0;
         }
     }
 }

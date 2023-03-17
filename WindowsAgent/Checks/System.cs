@@ -5,6 +5,7 @@ using System.Diagnostics;
 
 namespace WindowsAgent.Checks
 {
+    using Item = Dictionary<string, object>;
 
     internal class System : Check
     {
@@ -18,13 +19,16 @@ namespace WindowsAgent.Checks
         public override CheckResult Run()
         {
             CheckResult data = new CheckResult();
-            Dictionary<string, object>[] items = new Dictionary<string, object>[1];
+            Item[] items = new Item[1];
 
-            items[0]["name"] = "time";
-            items[0]["uptime"] = (int)(Stopwatch.GetTimestamp() / Stopwatch.Frequency);
-            items[0]["universalTime"] = (int)(DateTime.Now.ToUniversalTime().Subtract(new DateTime(1970, 1, 1))).TotalSeconds;
+            items[0] = new Item
+            {
+                ["name"] = "time",
+                ["uptime"] = (int)(Stopwatch.GetTimestamp() / Stopwatch.Frequency),
+                ["universalTime"] = (int)(DateTime.Now.ToUniversalTime().Subtract(new DateTime(1970, 1, 1))).TotalSeconds
+            };
 
-            data.AddType("system", items);
+            data.AddType("time", items);
             return data;
         }
     }

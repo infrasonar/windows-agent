@@ -10,8 +10,7 @@ namespace WindowsAgent
 {
     internal abstract class Check
     {
-        private static Random _r = new Random();
-        private Task _task;
+        private static readonly Random _r = new Random();
         private int _interval;
 
         public void Start()
@@ -22,13 +21,12 @@ namespace WindowsAgent
 
             if (_interval > 0)
             {
-                _task = Task.Run(() => CheckTask());
+                _ = Task.Run(() => CheckTask());
             }
             else
             {
                 Logger.Write(string.Format("check {0} is disabled", this.Key()), EventLogEntryType.Information, EventId.CheckDisabled);
             }
-
         }
 
         private async Task SendToHub(string body)
@@ -41,8 +39,10 @@ namespace WindowsAgent
 
             string url = string.Format("{0}/asset/{1}/collector/{2}/check/{3}", Config.GetApiUrl(), Config.GetAssetId(), InfraSonarAgent.CollectorKey, this.Key());
 
-            HttpRequestMessage request = new HttpRequestMessage(HttpMethod.Post, url);
-            request.Content = new StringContent(body, Encoding.UTF8, "application/json");
+            HttpRequestMessage request = new HttpRequestMessage(HttpMethod.Post, url)
+            {
+                Content = new StringContent(body, Encoding.UTF8, "application/json")
+            };
 
             try
             {
@@ -54,6 +54,10 @@ namespace WindowsAgent
                         throw new Exception(msg);
                     }
                 }
+                if (Config.IsDebug())
+                {
+                    Logger.Write(string.Format("Successfully send check to hub ({0})", this.Key()), EventLogEntryType.Information, EventId.SendCheck);
+                }
             }
             catch (Exception ex)
             {
@@ -63,7 +67,7 @@ namespace WindowsAgent
 
         public async Task CheckTask()
         {
-            int initialWait = _r.Next(5, _interval * 60);
+            int initialWait = _r.Next(59, _interval * 60);
             await Task.Delay(TimeSpan.FromSeconds(initialWait));
 
             // repeatedly wait a while and DoWork():
@@ -78,7 +82,15 @@ namespace WindowsAgent
                     }
                     catch (Exception ex)
                     {
-                        Logger.Write(string.Format("Failed to run check ({0}): {1}", this.Key(), ex.Message), EventLogEntryType.Error, EventId.UploadFailed);
+                        if (Config.IsDebug())
+                        {
+                            Logger.Write(string.Format("Failed to run check ({0}): {1} {2}", this.Key(), ex.Message, ex.StackTrace), EventLogEntryType.Error, EventId.CheckError);
+                        }
+                        else
+                        {
+                            Logger.Write(string.Format("Failed to run check ({0}): {1}", this.Key(), ex.Message), EventLogEntryType.Error, EventId.CheckError);
+                        }
+                        
                     }
                 }).Start();
                 await Task.Delay(TimeSpan.FromMinutes(_interval));
