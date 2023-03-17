@@ -12,13 +12,14 @@ namespace WindowsAgent
         public const string AssetKind = "Windows";
         private static string _version;
         private static Checks.System _systemCheck = new Checks.System();
+        private static Checks.Services _servicesCheck = new Checks.Services();
 
         public InfraSonarAgent()
         {
             InitializeComponent();
 
             Version version = Assembly.GetEntryAssembly().GetName().Version;
-            _version = string.Format("{0}.{1}.{2}", version.Major, version.Minor, version.MajorRevision);
+            _version = string.Format("{0}.{1}.{2}", version.Major, version.Minor, version.Build);
         }
 
         public static string GetVersion() { return _version; }
@@ -44,7 +45,12 @@ namespace WindowsAgent
             }
             else
             {
+                if (Config.IsDebug())
+                {
+                    Logger.Write(string.Format("Start {0} collector v{1}, Asset: {2} ({3})", CollectorKey, _version, Config.GetAssetName(), Config.GetAssetId()), EventLogEntryType.Information, EventId.StartCollector);
+                }
                 _systemCheck.Start();
+                _servicesCheck.Start();
             }
         }
 

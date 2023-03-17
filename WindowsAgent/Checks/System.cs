@@ -24,8 +24,8 @@ namespace WindowsAgent.Checks
             items[0] = new Item
             {
                 ["name"] = "time",
-                ["uptime"] = (int)(Stopwatch.GetTimestamp() / Stopwatch.Frequency),
-                ["universalTime"] = (int)(DateTime.Now.ToUniversalTime().Subtract(new DateTime(1970, 1, 1))).TotalSeconds
+                ["Uptime"] = (int)(Stopwatch.GetTimestamp() / Stopwatch.Frequency),
+                ["UniversalTime"] = (int)(DateTime.Now.ToUniversalTime().Subtract(new DateTime(1970, 1, 1))).TotalSeconds
             };
 
             data.AddType("time", items);

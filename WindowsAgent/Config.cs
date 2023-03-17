@@ -9,6 +9,7 @@ namespace WindowsAgent
         static private readonly string _authorization = ReadAuthorization();
         static private readonly string _apiUrl = ReadApiUrl();
         static private readonly bool _debug = ReadDebug();
+        static private readonly bool _localOnly = ReadlocalOnly();
         static private string _assetName = ReadAssetName();
         static private ulong _assetId = ReadAssetId();
 
@@ -76,6 +77,11 @@ namespace WindowsAgent
         static public bool IsDebug()
         {
             return _debug;
+        }
+
+        static public bool IsLocalOnly()
+        {
+            return _localOnly;
         }
 
         static public string GetAssetName()
@@ -225,6 +231,20 @@ namespace WindowsAgent
             }
             catch (Exception) { }
             return debug != 0;
+        }
+
+        static private bool ReadlocalOnly()
+        {
+            int localOnly = 0;
+            try
+            {
+                using (var key = Registry.LocalMachine.OpenSubKey(_APPKEY, false))
+                {
+                    localOnly = Convert.ToInt32(key.GetValue("LocalOnly", 0).ToString());
+                }
+            }
+            catch (Exception) { }
+            return localOnly != 0;
         }
     }
 }

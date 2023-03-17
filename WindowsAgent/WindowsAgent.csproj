@@ -51,6 +51,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Check.cs" />
+    <Compile Include="Checks\Services.cs" />
     <Compile Include="Checks\System.cs" />
     <Compile Include="CheckResult.cs" />
     <Compile Include="CheckType.cs" />

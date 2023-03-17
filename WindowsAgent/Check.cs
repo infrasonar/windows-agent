@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Diagnostics;
+using System.IO;
 using System.Net;
 using System.Net.Http;
 using System.Text;
@@ -67,8 +68,11 @@ namespace WindowsAgent
 
         public async Task CheckTask()
         {
-            int initialWait = _r.Next(59, _interval * 60);
-            await Task.Delay(TimeSpan.FromSeconds(initialWait));
+            if (!Config.IsLocalOnly())
+            {
+                int initialWait = _r.Next(59, _interval * 60);
+                await Task.Delay(TimeSpan.FromSeconds(initialWait));
+            }
 
             while (true)
             {
@@ -77,7 +81,18 @@ namespace WindowsAgent
                     try
                     {
                         string body = Run().GetData();
-                        Task.Run(async () => await SendToHub(body)).Wait();
+                        if (Config.IsLocalOnly())
+                        {
+                            string tempPath = Path.GetTempPath();
+                            string fileName = Path.Combine(tempPath, string.Format("infrasonar-{0}-{1}.json", InfraSonarAgent.CollectorKey, this.Key()));
+
+                            File.WriteAllText(fileName, body);
+                            Logger.Write(string.Format("Data for check written to file: {0}", fileName), EventLogEntryType.Information, EventId.CheckData);
+                        }
+                        else
+                        {
+                            Task.Run(async () => await SendToHub(body)).Wait();
+                        }                        
                     }
                     catch (Exception ex)
                     {
@@ -88,8 +103,7 @@ namespace WindowsAgent
                         else
                         {
                             Logger.Write(string.Format("Failed to run check ({0}): {1}", this.Key(), ex.Message), EventLogEntryType.Error, EventId.CheckError);
-                        }
-                        
+                        }                        
                     }
                 }).Start();
                 await Task.Delay(TimeSpan.FromMinutes(_interval));
