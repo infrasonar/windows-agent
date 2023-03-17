@@ -106,7 +106,8 @@ namespace WindowsAgent
             {
                 string body = JsonConvert.SerializeObject(new { kind = InfraSonarAgent.AssetKind });
                 string url = string.Format("{0}/asset/{1}/kind", Config.GetApiUrl(), assetId);
-                HttpRequestMessage request = new HttpRequestMessage(HttpMethod.Post, url);
+                var method = new HttpMethod("PATCH");
+                HttpRequestMessage request = new HttpRequestMessage(method, url);
                 request.Content = new StringContent(body, Encoding.UTF8, "application/json");
 
                 using (HttpResponseMessage resp = await client.SendAsync(request))

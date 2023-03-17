@@ -24,11 +24,11 @@ namespace WindowsAgent
                 {
                     if (key.GetValue("ApiUrl") == null)
                     {
-                        key.SetValue("ApiUrl", _apiUrl);
+                        key.SetValue("ApiUrl", _apiUrl, RegistryValueKind.String);
                     }
                     if (key.GetValue("Token") == null)
                     {
-                        key.SetValue("Token", string.Empty);
+                        key.SetValue("Token", string.Empty, RegistryValueKind.String);
                     }
                 }
             }
@@ -46,7 +46,7 @@ namespace WindowsAgent
             {
                 using (var key = Registry.LocalMachine.OpenSubKey(_APPKEY, true))
                 {
-                    key.SetValue("AssetId", _assetId);
+                    key.SetValue("AssetId", (long) _assetId, RegistryValueKind.QWord);
                 }
             }
             catch (Exception ex)
@@ -63,7 +63,7 @@ namespace WindowsAgent
             {
                 using (var key = Registry.LocalMachine.OpenSubKey(_APPKEY, true))
                 {
-                    key.SetValue("AssetName", _assetName);
+                    key.SetValue("AssetName", _assetName, RegistryValueKind.String);
                 }
             }
             catch (Exception ex)
@@ -104,7 +104,7 @@ namespace WindowsAgent
             {
                 using (var key = Registry.LocalMachine.OpenSubKey(_CHKKEY, false))
                 {
-                    int interval = Convert.ToInt32(key.GetValue(checkKey).ToString());
+                    int interval = Convert.ToInt32(key.GetValue(checkKey, defaultInterval).ToString());
                     if (interval < 0 || interval > 60 * 24)
                     {
                         Logger.Write(string.Format("Invalid interval for {0}; using the default ({1}s)", checkKey, defaultInterval), EventLogEntryType.Error, EventId.InvalidInterval);
@@ -131,7 +131,7 @@ namespace WindowsAgent
                 {
                     if (key.GetValue(checkKey) == null)
                     {
-                        key.SetValue(checkKey, interval);
+                        key.SetValue(checkKey, (uint) interval, RegistryValueKind.DWord);
                     }                    
                 }
             }
@@ -198,9 +198,9 @@ namespace WindowsAgent
             ulong assetId = 0;
             try
             {
-                using (var key = Registry.LocalMachine.OpenSubKey(_CHKKEY, false))
+                using (var key = Registry.LocalMachine.OpenSubKey(_APPKEY, false))
                 {
-                    assetId = Convert.ToUInt64(key.GetValue("AssetId").ToString());
+                    assetId = Convert.ToUInt64(key.GetValue("AssetId", 0).ToString());
                 }
             }
             catch (Exception) { }
