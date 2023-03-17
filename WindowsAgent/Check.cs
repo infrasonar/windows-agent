@@ -70,7 +70,6 @@ namespace WindowsAgent
             int initialWait = _r.Next(59, _interval * 60);
             await Task.Delay(TimeSpan.FromSeconds(initialWait));
 
-            // repeatedly wait a while and DoWork():
             while (true)
             {
                 new Thread(() =>
