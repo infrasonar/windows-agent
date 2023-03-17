@@ -8,7 +8,7 @@ namespace WindowsAgent
 {
     internal class CheckType
     {
-        private string _name;
+        private readonly string _name;
 
         private Dictionary<string, Dictionary<string, object>[]> _data;
         public CheckType(string name)

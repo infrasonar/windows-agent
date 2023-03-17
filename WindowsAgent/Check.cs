@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using System.Threading;
 using System.Net;
 using System.Diagnostics;
+using System.Net.Http;
 
 namespace WindowsAgent
 {
@@ -15,7 +16,10 @@ namespace WindowsAgent
 
         public void Start()
         {
-            _interval = Config.GetCheckInterval(this.Key(), this.DefaultInterval());    
+            _interval = Config.GetCheckInterval(this.Key(), this.DefaultInterval());
+            
+            Config.WriteCheckInterval(this.Key(), _interval);
+
             if (_interval > 0)
             {
                 _task = Task.Run(() => CheckTask());
@@ -27,20 +31,29 @@ namespace WindowsAgent
             
         }
 
-        private void _sendToHub(string body)
-        {            
-            var cli = new WebClient();
-            
-            cli.Encoding = Encoding.UTF8;
+        private async Task SendToHub(string body)
+        {
 
-            cli.Headers.Add(HttpRequestHeader.ContentType, "application/json");            
-            cli.Headers.Add(HttpRequestHeader.Authorization, Config.GetAuthorization());
-            cli.Headers.Add(HttpRequestHeader.AcceptEncoding, "gzip");
+            var client = new HttpClient();
 
-            string url = string.Format("{0}/asset/{1}/collector/{2}/check/{3}", Config.GetApiUrl(), InfraSonarAgent.GetAssetId(), InfraSonarAgent.CollectorKey, this.Key());
+            client.DefaultRequestHeaders.Add("Authorization", Config.GetAuthorization());
+            client.DefaultRequestHeaders.Add("Accept-Encoding", "gzip");
+
+            string url = string.Format("{0}/asset/{1}/collector/{2}/check/{3}", Config.GetApiUrl(), Config.GetAssetId(), InfraSonarAgent.CollectorKey, this.Key());
+
+            HttpRequestMessage request = new HttpRequestMessage(HttpMethod.Post, url);
+            request.Content = new StringContent(body, Encoding.UTF8, "application/json");
+
             try
             {
-                string response = cli.UploadString(url, body);                
+                using (HttpResponseMessage resp = await client.SendAsync(request))
+                {
+                    if (resp.StatusCode != HttpStatusCode.NoContent)
+                    {
+                        string msg = await resp.Content.ReadAsStringAsync();
+                        throw new Exception(msg);
+                    }
+                }
             }
             catch (Exception ex)
             {
@@ -61,15 +74,12 @@ namespace WindowsAgent
                     try
                     {
                         string body = Run().GetData();
-
+                        Task.Run(async () => await SendToHub(body)).Wait();
                     }
                     catch (Exception ex)
                     {
                         Logger.Write(string.Format("Failed to run check ({0}): {1}", this.Key(), ex.Message), EventLogEntryType.Error, EventId.UploadFailed);
-                    }
-                    
-                    
-
+                    }                                      
                 }).Start();               
                 await Task.Delay(TimeSpan.FromMinutes(_interval));
             }
