@@ -92,7 +92,7 @@ namespace WindowsAgent
                         else
                         {
                             Task.Run(async () => await SendToHub(body)).Wait();
-                        }                        
+                        }
                     }
                     catch (Exception ex)
                     {
@@ -103,7 +103,7 @@ namespace WindowsAgent
                         else
                         {
                             Logger.Write(string.Format("Failed to run check ({0}): {1}", this.Key(), ex.Message), EventLogEntryType.Error, EventId.CheckError);
-                        }                        
+                        }
                     }
                 }).Start();
                 await Task.Delay(TimeSpan.FromMinutes(_interval));

@@ -1,10 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Management;
 using System.ServiceProcess;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace WindowsAgent.Checks
 {
@@ -22,13 +19,11 @@ namespace WindowsAgent.Checks
         public override CheckResult Run()
         {
             CheckResult data = new CheckResult();
-            ServiceController[] services;
-            services = ServiceController.GetServices();
-
+            ServiceController[] services = ServiceController.GetServices();
 
             Item[] items = new Item[services.Length];
             int index = 0;
-            
+
             foreach (ServiceController service in services)
             {
                 ManagementPath mp = new ManagementPath(string.Format("Win32_Service.Name='{0}'", service.ServiceName));
