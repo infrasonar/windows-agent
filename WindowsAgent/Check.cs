@@ -1,10 +1,10 @@
 ﻿using System;
-using System.Text;
-using System.Threading.Tasks;
-using System.Threading;
-using System.Net;
 using System.Diagnostics;
+using System.Net;
 using System.Net.Http;
+using System.Text;
+using System.Threading;
+using System.Threading.Tasks;
 
 namespace WindowsAgent
 {
@@ -17,7 +17,7 @@ namespace WindowsAgent
         public void Start()
         {
             _interval = Config.GetCheckInterval(this.Key(), this.DefaultInterval());
-            
+
             Config.WriteCheckInterval(this.Key(), _interval);
 
             if (_interval > 0)
@@ -28,7 +28,7 @@ namespace WindowsAgent
             {
                 Logger.Write(string.Format("check {0} is disabled", this.Key()), EventLogEntryType.Information, EventId.CheckDisabled);
             }
-            
+
         }
 
         private async Task SendToHub(string body)
@@ -79,8 +79,8 @@ namespace WindowsAgent
                     catch (Exception ex)
                     {
                         Logger.Write(string.Format("Failed to run check ({0}): {1}", this.Key(), ex.Message), EventLogEntryType.Error, EventId.UploadFailed);
-                    }                                      
-                }).Start();               
+                    }
+                }).Start();
                 await Task.Delay(TimeSpan.FromMinutes(_interval));
             }
         }

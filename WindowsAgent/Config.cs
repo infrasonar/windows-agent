@@ -36,7 +36,7 @@ namespace WindowsAgent
             {
                 Logger.Write(string.Format("Failed to initialize registry: {0}", ex.Message), EventLogEntryType.Warning, EventId.InitRegistry);
             }
-            SetAssetId(_assetId);            
+            SetAssetId(_assetId);
         }
 
         static public void SetAssetId(ulong assetId)
@@ -46,7 +46,7 @@ namespace WindowsAgent
             {
                 using (var key = Registry.LocalMachine.OpenSubKey(_APPKEY, true))
                 {
-                    key.SetValue("AssetId", (long) _assetId, RegistryValueKind.QWord);
+                    key.SetValue("AssetId", (long)_assetId, RegistryValueKind.QWord);
                 }
             }
             catch (Exception ex)
@@ -113,7 +113,7 @@ namespace WindowsAgent
                     if (interval != defaultInterval)
                     {
                         Logger.Write(string.Format("Using interval {1}s for check {0}", interval, checkKey), EventLogEntryType.Information, EventId.CustomInterval);
-                    }                    
+                    }
                     return interval;
                 }
             }
@@ -131,8 +131,8 @@ namespace WindowsAgent
                 {
                     if (key.GetValue(checkKey) == null)
                     {
-                        key.SetValue(checkKey, (uint) interval, RegistryValueKind.DWord);
-                    }                    
+                        key.SetValue(checkKey, (uint)interval, RegistryValueKind.DWord);
+                    }
                 }
             }
             catch (Exception ex)

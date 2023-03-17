@@ -1,8 +1,6 @@
 ﻿using Newtonsoft.Json;
 using System;
-using System.Collections.Generic;
 using System.Diagnostics;
-using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Text;
@@ -13,16 +11,17 @@ namespace WindowsAgent
     internal class Announce
     {
 
-        private class ContainerId
+        private class RespContainerId
         {
-            public ulong containerId { get; set; }
+            [JsonProperty(PropertyName = "containerId")]
+            public ulong ContainerId { get; set; }
         }
 
-        private class AssetId
+        private class RespAssetId
         {
-            public ulong assetId { get; set; }
+            [JsonProperty(PropertyName = "assetId")]
+            public ulong AssetId { get; set; }
         }
-
 
         public async static Task CreateAsset()
         {
@@ -41,15 +40,15 @@ namespace WindowsAgent
                     if (resp.StatusCode == HttpStatusCode.OK)
                     {
                         string json = await resp.Content.ReadAsStringAsync();
-                        ContainerId res = JsonConvert.DeserializeObject<ContainerId>(json);
-                        containerId = res.containerId;
+                        RespContainerId res = JsonConvert.DeserializeObject<RespContainerId>(json);
+                        containerId = res.ContainerId;
                     }
                     else
                     {
                         string msg = await resp.Content.ReadAsStringAsync();
                         throw new Exception(msg);
                     }
-                }                    
+                }
             }
             catch (Exception ex)
             {
@@ -68,8 +67,8 @@ namespace WindowsAgent
                     if (resp.StatusCode == HttpStatusCode.Created)
                     {
                         string json = await resp.Content.ReadAsStringAsync();
-                        AssetId res = JsonConvert.DeserializeObject<AssetId>(json);
-                        assetId = res.assetId;
+                        RespAssetId res = JsonConvert.DeserializeObject<RespAssetId>(json);
+                        assetId = res.AssetId;
                     }
                     else
                     {
@@ -87,7 +86,7 @@ namespace WindowsAgent
             {
                 string url = string.Format("{0}/asset/{1}/collector/{2}", Config.GetApiUrl(), assetId, InfraSonarAgent.CollectorKey);
                 HttpRequestMessage request = new HttpRequestMessage(HttpMethod.Post, url);
-                
+
                 using (HttpResponseMessage resp = await client.SendAsync(request))
                 {
                     if (resp.StatusCode != HttpStatusCode.NoContent)

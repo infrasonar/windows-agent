@@ -24,7 +24,7 @@ namespace WindowsAgent
         public static string GetVersion() { return _version; }
 
         protected override void OnStart(string[] args)
-        {   
+        {
             try { Config.Init(); } catch { Stop(); /* Event log is written on failure */ }
 
             if (Config.GetAssetId() == 0)

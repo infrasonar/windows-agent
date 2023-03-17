@@ -1,10 +1,5 @@
 ﻿using Newtonsoft.Json;
-using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Reflection;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace WindowsAgent
 {
@@ -17,11 +12,11 @@ namespace WindowsAgent
         }
 
         private Dictionary<string, Dictionary<string, object>[]> _result;
-        
+
 
         public CheckResult()
         {
-            _result = new Dictionary<string, Dictionary<string, object>[]>();            
+            _result = new Dictionary<string, Dictionary<string, object>[]>();
         }
 
         public void AddType(string name, Dictionary<string, object>[] items)
@@ -35,7 +30,7 @@ namespace WindowsAgent
             {
                 version = InfraSonarAgent.GetVersion(),
                 data = _result,
-            };            
+            };
             return JsonConvert.SerializeObject(data);
         }
     }
