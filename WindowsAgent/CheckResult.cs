@@ -14,7 +14,7 @@ namespace WindowsAgent
             public Dictionary<string, Dictionary<string, object>[]> Data { get; set; }
         }
 
-        private Dictionary<string, Dictionary<string, object>[]> _result;
+        private readonly Dictionary<string, Dictionary<string, object>[]> _result;
 
 
         public CheckResult()
