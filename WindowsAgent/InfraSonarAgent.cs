@@ -69,10 +69,8 @@ namespace WindowsAgent
                 return;
             }
 
-            if (Config.IsDebug())
-            {
-                Logger.Write(string.Format("Start {0} collector v{1}, Asset: {2} ({3})", CollectorKey, _version, Config.GetAssetName(), Config.GetAssetId()), EventLogEntryType.Information, EventId.StartCollector);
-            }
+            Logger.Write(string.Format("Start InfraSonar {0} collector v{1}, Asset: {2} ({3})", CollectorKey, _version, Config.GetAssetName(), Config.GetAssetId()), EventLogEntryType.Information, EventId.StartCollector);
+            
             _systemCheck.Start();
             _servicesCheck.Start();
         }
