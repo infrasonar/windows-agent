@@ -4,11 +4,9 @@ namespace WindowsAgent
 {
     public enum EventId
     {
-        TokenFound = 2000,
+        None = 0,
         TokenNotFound = 2001,
         InvalidInterval = 2002,
-        CustomInterval = 2003,
-        CheckDisabled = 2004,
         UploadFailed = 2005,
         WriteIntervalFailed = 2006,
         InitRegistry = 2007,
@@ -17,10 +15,7 @@ namespace WindowsAgent
         AssetNameNotFound = 2010,
         AssignCollectorFailed = 2011,
         AssignKindFailed = 2011,
-        SendCheck = 2012,
         CheckError = 2013,
-        StartCollector = 2014,
-        CheckData = 2015,
         CreateAsset = 2016,
         AnnounceAsset = 2017,
     }

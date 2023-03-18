@@ -26,7 +26,7 @@ namespace WindowsAgent
             }
             else
             {
-                Logger.Write(string.Format("Check {0} is disabled", this.Key()), EventLogEntryType.Information, EventId.CheckDisabled);
+                Logger.Write(string.Format("Check {0} is disabled", this.Key()), EventLogEntryType.Information, EventId.None);
             }
         }
 
@@ -57,7 +57,7 @@ namespace WindowsAgent
                 }
                 if (Config.IsDebug())
                 {
-                    Logger.Write(string.Format("Successfully send check to hub ({0})", this.Key()), EventLogEntryType.Information, EventId.SendCheck);
+                    Logger.Write(string.Format("Successfully send check to hub ({0})", this.Key()), EventLogEntryType.Information, EventId.None);
                 }
             }
             catch (Exception ex)
@@ -87,7 +87,7 @@ namespace WindowsAgent
                             string fileName = Path.Combine(tempPath, string.Format("infrasonar-{0}-{1}.json", InfraSonarAgent.CollectorKey, this.Key()));
 
                             File.WriteAllText(fileName, body);
-                            Logger.Write(string.Format("Data for check written to file: {0}", fileName), EventLogEntryType.Information, EventId.CheckData);
+                            Logger.Write(string.Format("Data for check written to file: {0}", fileName), EventLogEntryType.Information, EventId.None);
                         }
                         else
                         {

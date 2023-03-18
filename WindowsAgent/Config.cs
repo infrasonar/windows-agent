@@ -124,7 +124,7 @@ namespace WindowsAgent
                     }
                     if (interval != defaultInterval)
                     {
-                        Logger.Write(string.Format("Using interval {1}s for check {0}", interval, checkKey), EventLogEntryType.Information, EventId.CustomInterval);
+                        Logger.Write(string.Format("Using interval {1}s for check {0}", interval, checkKey), EventLogEntryType.Information, EventId.None);
                     }
                     return interval;
                 }
