@@ -18,7 +18,7 @@ namespace WindowsAgent.Checks
 
         public override CheckResult Run()
         {
-            CheckResult data = new CheckResult();
+            var data = new CheckResult();
             Item[] items = new Item[1];
 
             items[0] = new Item

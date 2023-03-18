@@ -40,14 +40,14 @@ namespace WindowsAgent
 
             string url = string.Format("{0}/asset/{1}/collector/{2}/check/{3}", Config.GetApiUrl(), Config.GetAssetId(), InfraSonarAgent.CollectorKey, this.Key());
 
-            HttpRequestMessage request = new HttpRequestMessage(HttpMethod.Post, url)
+            var request = new HttpRequestMessage(HttpMethod.Post, url)
             {
                 Content = new StringContent(body, Encoding.UTF8, "application/json")
             };
 
             try
             {
-                using (HttpResponseMessage resp = await client.SendAsync(request))
+                using (var resp = await client.SendAsync(request))
                 {
                     if (resp.StatusCode != HttpStatusCode.NoContent)
                     {

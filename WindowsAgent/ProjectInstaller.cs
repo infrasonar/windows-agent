@@ -8,8 +8,8 @@ namespace WindowsAgent
     {
         public ProjectInstaller()
         {
-            ServiceProcessInstaller serviceProcessInstaller = new ServiceProcessInstaller();
-            ServiceInstaller serviceInstaller = new ServiceInstaller();
+            var serviceProcessInstaller = new ServiceProcessInstaller();
+            var serviceInstaller = new ServiceInstaller();
 
             // Set the account properties for the service process.
             serviceProcessInstaller.Account = ServiceAccount.LocalSystem;

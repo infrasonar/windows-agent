@@ -27,7 +27,7 @@ namespace WindowsAgent
     {
         public static void Write(string message, EventLogEntryType type, EventId eventId)
         {
-            using (EventLog eventLog = new EventLog("Application"))
+            using (var eventLog = new EventLog("Application"))
             {
                 eventLog.Source = "InfraSonarAgent";
                 eventLog.WriteEntry(message, type, (int)eventId);

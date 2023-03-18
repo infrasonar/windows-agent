@@ -18,16 +18,15 @@ namespace WindowsAgent.Checks
 
         public override CheckResult Run()
         {
-            CheckResult data = new CheckResult();
-            ServiceController[] services = ServiceController.GetServices();
-
-            Item[] items = new Item[services.Length];
             int index = 0;
+            var data = new CheckResult();
+            ServiceController[] services = ServiceController.GetServices();
+            Item[] items = new Item[services.Length];
 
-            foreach (ServiceController service in services)
+            foreach (var service in services)
             {
-                ManagementPath mp = new ManagementPath(string.Format("Win32_Service.Name='{0}'", service.ServiceName));
-                ManagementObject mo = new ManagementObject(mp);
+                var mp = new ManagementPath(string.Format("Win32_Service.Name='{0}'", service.ServiceName));
+                var mo = new ManagementObject(mp);
 
                 items[index] = new Item
                 {

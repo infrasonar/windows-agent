@@ -22,6 +22,44 @@ namespace WindowsAgent
             public ulong AssetId { get; set; }
         }
 
+        private class RespAssetname
+        {
+            [JsonProperty(PropertyName = "name")]
+            public string Name { get; set; }
+        }
+
+        public async static Task JoinAsset()
+        {
+            var client = new HttpClient();
+
+            client.DefaultRequestHeaders.Add("Authorization", Config.GetAuthorization());
+            client.DefaultRequestHeaders.Add("Accept-Encoding", "gzip");
+
+            try
+            {
+                string url = string.Format("{0}/asset/{1}?field=namae", Config.GetApiUrl(), Config.GetAssetId());
+                var request = new HttpRequestMessage(HttpMethod.Get, url);
+
+                using (var resp = await client.SendAsync(request))
+                {
+                    if (resp.StatusCode == HttpStatusCode.OK)
+                    {
+                        string json = await resp.Content.ReadAsStringAsync();
+                        Config.SetAssetName(JsonConvert.DeserializeObject<RespAssetname>(json).Name);
+                    }
+                    else
+                    {
+                        string msg = await resp.Content.ReadAsStringAsync();
+                        throw new Exception(msg);
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(String.Format("Failed to get asset name: {0}", ex.Message));
+            }
+        }
+
         public async static Task CreateAsset()
         {
             ulong containerId, assetId;
@@ -33,8 +71,8 @@ namespace WindowsAgent
             try
             {
                 string url = string.Format("{0}/container/id", Config.GetApiUrl());
-                HttpRequestMessage request = new HttpRequestMessage(HttpMethod.Get, url);
-                using (HttpResponseMessage resp = await client.SendAsync(request))
+                var request = new HttpRequestMessage(HttpMethod.Get, url);
+                using (var resp = await client.SendAsync(request))
                 {
                     if (resp.StatusCode == HttpStatusCode.OK)
                     {
@@ -57,12 +95,12 @@ namespace WindowsAgent
             {
                 string body = JsonConvert.SerializeObject(new { name = Config.GetAssetName() });
                 string url = string.Format("{0}/container/{1}/asset", Config.GetApiUrl(), containerId);
-                HttpRequestMessage request = new HttpRequestMessage(HttpMethod.Post, url)
+                var request = new HttpRequestMessage(HttpMethod.Post, url)
                 {
                     Content = new StringContent(body, Encoding.UTF8, "application/json")
                 };
 
-                using (HttpResponseMessage resp = await client.SendAsync(request))
+                using (var resp = await client.SendAsync(request))
                 {
                     if (resp.StatusCode == HttpStatusCode.Created)
                     {
@@ -84,9 +122,9 @@ namespace WindowsAgent
             try
             {
                 string url = string.Format("{0}/asset/{1}/collector/{2}", Config.GetApiUrl(), assetId, InfraSonarAgent.CollectorKey);
-                HttpRequestMessage request = new HttpRequestMessage(HttpMethod.Post, url);
+                var request = new HttpRequestMessage(HttpMethod.Post, url);
 
-                using (HttpResponseMessage resp = await client.SendAsync(request))
+                using (var resp = await client.SendAsync(request))
                 {
                     if (resp.StatusCode != HttpStatusCode.NoContent)
                     {
@@ -105,7 +143,7 @@ namespace WindowsAgent
                 string body = JsonConvert.SerializeObject(new { kind = InfraSonarAgent.AssetKind });
                 string url = string.Format("{0}/asset/{1}/kind", Config.GetApiUrl(), assetId);
                 var method = new HttpMethod("PATCH");
-                HttpRequestMessage request = new HttpRequestMessage(method, url)
+                var request = new HttpRequestMessage(method, url)
                 {
                     Content = new StringContent(body, Encoding.UTF8, "application/json")
                 };

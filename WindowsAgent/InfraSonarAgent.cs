@@ -38,6 +38,11 @@ namespace WindowsAgent
 
                 Task.Run(Announce.CreateAsset).Wait();
             }
+            else
+            {
+                Task.Run(Announce.JoinAsset).Wait(); 
+            }
+
             if (Config.HasToken() == false)
             {
                 Logger.Write("No token found; Set the HKLM\\Software\\Cesbit\\InfraSonarAgent\\Token registry key", EventLogEntryType.Error, EventId.TokenNotFound);

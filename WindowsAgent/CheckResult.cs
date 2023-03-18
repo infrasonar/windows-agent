@@ -26,7 +26,7 @@ namespace WindowsAgent
 
         public string GetData()
         {
-            Data data = new Data
+            var data = new Data
             {
                 version = InfraSonarAgent.GetVersion(),
                 data = _result,
