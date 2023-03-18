@@ -16,6 +16,14 @@ namespace WindowsAgent
 
         public void Start()
         {
+            if (!CanRun())
+            {
+                if (Config.IsDebug())
+                {
+                    Logger.Write(string.Format("Check {0} cannot run on this computer", this.Key()), EventLogEntryType.Information, EventId.None);
+                }
+                return;
+            }
             _interval = Config.GetCheckInterval(this.Key(), this.DefaultInterval());
 
             Config.WriteCheckInterval(this.Key(), _interval);
