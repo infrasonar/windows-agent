@@ -31,7 +31,7 @@
             // 
             // WindowsAgent
             // 
-            this.ServiceName = "Windows Agent";
+            this.ServiceName = "InfraSonarAgent";
 
         }
 
