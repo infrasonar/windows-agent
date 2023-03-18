@@ -26,7 +26,7 @@ namespace WindowsAgent
             }
             else
             {
-                Logger.Write(string.Format("check {0} is disabled", this.Key()), EventLogEntryType.Information, EventId.CheckDisabled);
+                Logger.Write(string.Format("Check {0} is disabled", this.Key()), EventLogEntryType.Information, EventId.CheckDisabled);
             }
         }
 

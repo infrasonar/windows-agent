@@ -14,7 +14,7 @@ namespace WindowsAgent
         static private ulong _assetId = ReadAssetId();
 
         private const string _APPKEY = @"Software\Cesbit\InfraSonarAgent";
-        private const string _CHKKEY = @"Software\Cesbit\InfraSonarAgent\Checks";
+        private const string _CHKKEY = @"Software\Cesbit\InfraSonarAgent\CheckInterval";
 
         static public void Init()
         {

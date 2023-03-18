@@ -21,6 +21,8 @@ namespace WindowsAgent
         CheckError = 2013,
         StartCollector = 2014,
         CheckData = 2015,
+        CreateAsset = 2016,
+        AnnounceAsset = 2017,
     }
 
     internal class Logger

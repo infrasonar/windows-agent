@@ -34,29 +34,47 @@ namespace WindowsAgent
                 {
                     Logger.Write("Missing asset name", EventLogEntryType.Error, EventId.AssetNameNotFound);
                     Stop();
+                    return;
                 }
 
-                Task.Run(Announce.CreateAsset).Wait();
+                try
+                {
+                    Task.Run(Announce.CreateAsset).Wait();
+                }
+                catch (Exception ex)
+                {
+                    Logger.Write(string.Format("Failed to create asset; {0}", ex.InnerException.Message), EventLogEntryType.Error, EventId.CreateAsset);
+                    Stop();
+                    return;
+                }                
             }
             else
             {
-                Task.Run(Announce.JoinAsset).Wait(); 
+                try
+                {
+                    Task.Run(Announce.JoinAsset).Wait();
+                }                
+                catch (Exception ex)
+                {
+                    Logger.Write(string.Format("Failed to announce asset; {0}", ex.InnerException.Message), EventLogEntryType.Error, EventId.AnnounceAsset);
+                    Stop();
+                    return;
+                }
             }
 
             if (Config.HasToken() == false)
             {
                 Logger.Write("No token found; Set the HKLM\\Software\\Cesbit\\InfraSonarAgent\\Token registry key", EventLogEntryType.Error, EventId.TokenNotFound);
                 Stop();
+                return;
             }
-            else
+
+            if (Config.IsDebug())
             {
-                if (Config.IsDebug())
-                {
-                    Logger.Write(string.Format("Start {0} collector v{1}, Asset: {2} ({3})", CollectorKey, _version, Config.GetAssetName(), Config.GetAssetId()), EventLogEntryType.Information, EventId.StartCollector);
-                }
-                _systemCheck.Start();
-                _servicesCheck.Start();
+                Logger.Write(string.Format("Start {0} collector v{1}, Asset: {2} ({3})", CollectorKey, _version, Config.GetAssetName(), Config.GetAssetId()), EventLogEntryType.Information, EventId.StartCollector);
             }
+            _systemCheck.Start();
+            _servicesCheck.Start();
         }
 
         protected override void OnStop()
