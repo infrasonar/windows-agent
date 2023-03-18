@@ -5,10 +5,13 @@ namespace WindowsAgent
 {
     internal class CheckResult
     {
-        private class Data
+        private class Result
         {
-            public string version { get; set; }
-            public Dictionary<string, Dictionary<string, object>[]> data { get; set; }
+            [JsonProperty(PropertyName = "version")]
+            public string Version { get; set; }
+
+            [JsonProperty(PropertyName = "data")]
+            public Dictionary<string, Dictionary<string, object>[]> Data { get; set; }
         }
 
         private Dictionary<string, Dictionary<string, object>[]> _result;
@@ -26,10 +29,10 @@ namespace WindowsAgent
 
         public string GetData()
         {
-            var data = new Data
+            var data = new Result
             {
-                version = InfraSonarAgent.GetVersion(),
-                data = _result,
+                Version = InfraSonarAgent.GetVersion(),
+                Data = _result,
             };
             return JsonConvert.SerializeObject(data);
         }
