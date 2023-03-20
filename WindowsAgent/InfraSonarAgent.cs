@@ -28,6 +28,13 @@ namespace WindowsAgent
         {
             try { Config.Init(); } catch { Stop(); /* Event log is written on failure */ }
 
+            if (Config.HasToken() == false)
+            {
+                Logger.Write("No token found; Set the HKLM\\Software\\Cesbit\\InfraSonarAgent\\Token registry key", EventLogEntryType.Error, EventId.TokenNotFound);
+                Stop();
+                return;
+            }
+
             if (Config.GetAssetId() == 0)
             {
                 if (string.IsNullOrWhiteSpace(Config.GetAssetName()))
@@ -60,13 +67,6 @@ namespace WindowsAgent
                     Stop();
                     return;
                 }
-            }
-
-            if (Config.HasToken() == false)
-            {
-                Logger.Write("No token found; Set the HKLM\\Software\\Cesbit\\InfraSonarAgent\\Token registry key", EventLogEntryType.Error, EventId.TokenNotFound);
-                Stop();
-                return;
             }
 
             Logger.Write(string.Format("Start InfraSonar {0} collector v{1}, Asset: {2} ({3})", CollectorKey, _version, Config.GetAssetName(), Config.GetAssetId()), EventLogEntryType.Information, EventId.None);
