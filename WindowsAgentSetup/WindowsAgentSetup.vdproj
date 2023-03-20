@@ -317,15 +317,15 @@
         {
         "Name" = "8:Microsoft Visual Studio"
         "ProductName" = "8:InfraSonar Windows Agent"
-        "ProductCode" = "8:{7F1A465F-DAB6-43DD-B89A-7DCF3E293EAE}"
-        "PackageCode" = "8:{E6286CE9-11AA-4B2C-AF54-82931DE17FFA}"
+        "ProductCode" = "8:{8B9CD4A4-7CF1-444F-9288-B7F8EEDDAA3C}"
+        "PackageCode" = "8:{CBEE6F02-41B3-4F8B-B37E-F0973CB45EF3}"
         "UpgradeCode" = "8:{A9CF867C-F6A2-4273-8A73-6A7E7EC78151}"
         "AspNetVersion" = "8:"
         "RestartWWWService" = "11:FALSE"
         "RemovePreviousVersions" = "11:FALSE"
         "DetectNewerInstalledVersion" = "11:TRUE"
         "InstallAllUsers" = "11:FALSE"
-        "ProductVersion" = "8:1.0.0"
+        "ProductVersion" = "8:1.0.6"
         "Manufacturer" = "8:Cesbit"
         "ARPHELPTELEPHONE" = "8:"
         "ARPHELPLINK" = "8:https://infrasonar.com"
@@ -368,42 +368,6 @@
                             "Transitive" = "11:FALSE"
                                 "Keys"
                                 {
-                                    "{60EA8692-D2D5-43EB-80DC-7906BF13D6EF}:_251F0E70A888495AA5EF59B9AE55BCC3"
-                                    {
-                                    "Name" = "8:InfraSonarAgent"
-                                    "Condition" = "8:"
-                                    "AlwaysCreate" = "11:FALSE"
-                                    "DeleteAtUninstall" = "11:FALSE"
-                                    "Transitive" = "11:FALSE"
-                                        "Keys"
-                                        {
-                                            "{60EA8692-D2D5-43EB-80DC-7906BF13D6EF}:_63BEC4BD80EB4708852CE2DC7C358C85"
-                                            {
-                                            "Name" = "8:CheckInterval"
-                                            "Condition" = "8:"
-                                            "AlwaysCreate" = "11:FALSE"
-                                            "DeleteAtUninstall" = "11:FALSE"
-                                            "Transitive" = "11:FALSE"
-                                                "Keys"
-                                                {
-                                                }
-                                                "Values"
-                                                {
-                                                }
-                                            }
-                                        }
-                                        "Values"
-                                        {
-                                            "{ADCFDA98-8FDD-45E4-90BC-E3D20B029870}:_C055FC7C893E4AF187FA8CCC73545A4F"
-                                            {
-                                            "Name" = "8:Token"
-                                            "Condition" = "8:"
-                                            "Transitive" = "11:FALSE"
-                                            "ValueTypes" = "3:1"
-                                            "Value" = "8:"
-                                            }
-                                        }
-                                    }
                                 }
                                 "Values"
                                 {
