@@ -13,6 +13,7 @@ namespace WindowsAgent
         private static string _version;
         private static Checks.System _systemCheck = new Checks.System();
         private static Checks.Services _servicesCheck = new Checks.Services();
+        private static Checks.Software _softwareCheck = new Checks.Software();
 
         public InfraSonarAgent()
         {
@@ -73,6 +74,7 @@ namespace WindowsAgent
             
             _systemCheck.Start();
             _servicesCheck.Start();
+            _softwareCheck.Start();
         }
 
         protected override void OnStop()
