@@ -16,6 +16,18 @@
     {
         "Entry"
         {
+        "MsmKey" = "8:_1A5CD4800F214E22B85B9B4F2A83914F"
+        "OwnerKey" = "8:_UNDEFINED"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_44DFB08B3EB393448A7A4B454D8AFBA5"
+        "OwnerKey" = "8:_5FD8335B3B894466ABFF5ADC94D32B61"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
         "MsmKey" = "8:_5FD8335B3B894466ABFF5ADC94D32B61"
         "OwnerKey" = "8:_UNDEFINED"
         "MsmSig" = "8:_UNDEFINED"
@@ -29,13 +41,19 @@
         "Entry"
         {
         "MsmKey" = "8:_UNDEFINED"
-        "OwnerKey" = "8:_939E78289189BE45FE3F4E1022CB5974"
+        "OwnerKey" = "8:_5FD8335B3B894466ABFF5ADC94D32B61"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
         {
         "MsmKey" = "8:_UNDEFINED"
-        "OwnerKey" = "8:_5FD8335B3B894466ABFF5ADC94D32B61"
+        "OwnerKey" = "8:_44DFB08B3EB393448A7A4B454D8AFBA5"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_UNDEFINED"
+        "OwnerKey" = "8:_939E78289189BE45FE3F4E1022CB5974"
         "MsmSig" = "8:_UNDEFINED"
         }
     }
@@ -63,6 +81,14 @@
             "PrerequisitesLocation" = "2:1"
             "Url" = "8:"
             "ComponentsUrl" = "8:"
+                "Items"
+                {
+                    "{EDC2488A-8267-493A-A98E-7D9C3B36CDF3}:.NETFramework,Version=v4.7.2"
+                    {
+                    "Name" = "8:Microsoft .NET Framework 4.7.2 (x86 and x64)"
+                    "ProductCode" = "8:.NETFramework,Version=v4.7.2"
+                    }
+                }
             }
         }
         "Release"
@@ -87,6 +113,14 @@
             "PrerequisitesLocation" = "2:1"
             "Url" = "8:"
             "ComponentsUrl" = "8:"
+                "Items"
+                {
+                    "{EDC2488A-8267-493A-A98E-7D9C3B36CDF3}:.NETFramework,Version=v4.7.2"
+                    {
+                    "Name" = "8:Microsoft .NET Framework 4.7.2 (x86 and x64)"
+                    "ProductCode" = "8:.NETFramework,Version=v4.7.2"
+                    }
+                }
             }
         }
     }
@@ -145,6 +179,57 @@
         }
         "File"
         {
+            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_1A5CD4800F214E22B85B9B4F2A83914F"
+            {
+            "SourcePath" = "8:..\\infrasonar-favicon-64x64.ico"
+            "TargetName" = "8:infrasonar-favicon-64x64.ico"
+            "Tag" = "8:"
+            "Folder" = "8:_95AE2010B57141A2BBECDA1911DC91F8"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:FALSE"
+            "IsDependency" = "11:FALSE"
+            "IsolateTo" = "8:"
+            }
+            "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_44DFB08B3EB393448A7A4B454D8AFBA5"
+            {
+            "AssemblyRegister" = "3:1"
+            "AssemblyIsInGAC" = "11:FALSE"
+            "AssemblyAsmDisplayName" = "8:Newtonsoft.Json, Version=13.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL"
+                "ScatterAssemblies"
+                {
+                    "_44DFB08B3EB393448A7A4B454D8AFBA5"
+                    {
+                    "Name" = "8:Newtonsoft.Json.dll"
+                    "Attributes" = "3:512"
+                    }
+                }
+            "SourcePath" = "8:Newtonsoft.Json.dll"
+            "TargetName" = "8:"
+            "Tag" = "8:"
+            "Folder" = "8:_95AE2010B57141A2BBECDA1911DC91F8"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:FALSE"
+            "IsDependency" = "11:TRUE"
+            "IsolateTo" = "8:"
+            }
             "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_939E78289189BE45FE3F4E1022CB5974"
             {
             "AssemblyRegister" = "3:1"
@@ -231,9 +316,9 @@
         "Product"
         {
         "Name" = "8:Microsoft Visual Studio"
-        "ProductName" = "8:WindowsAgentSetup"
+        "ProductName" = "8:InfraSonar Windows Agent"
         "ProductCode" = "8:{7F1A465F-DAB6-43DD-B89A-7DCF3E293EAE}"
-        "PackageCode" = "8:{A8241FE5-56FA-4E91-B768-E10F0C0297F0}"
+        "PackageCode" = "8:{E6286CE9-11AA-4B2C-AF54-82931DE17FFA}"
         "UpgradeCode" = "8:{A9CF867C-F6A2-4273-8A73-6A7E7EC78151}"
         "AspNetVersion" = "8:"
         "RestartWWWService" = "11:FALSE"
@@ -243,14 +328,14 @@
         "ProductVersion" = "8:1.0.0"
         "Manufacturer" = "8:Cesbit"
         "ARPHELPTELEPHONE" = "8:"
-        "ARPHELPLINK" = "8:"
+        "ARPHELPLINK" = "8:https://infrasonar.com"
         "Title" = "8:InfraSonarAgentSetup"
         "Subject" = "8:"
         "ARPCONTACT" = "8:Cesbit"
         "Keywords" = "8:"
         "ARPCOMMENTS" = "8:"
         "ARPURLINFOABOUT" = "8:"
-        "ARPPRODUCTICON" = "8:"
+        "ARPPRODUCTICON" = "8:_1A5CD4800F214E22B85B9B4F2A83914F"
         "ARPIconIndex" = "3:0"
         "SearchPath" = "8:"
         "UseSystemSearchPath" = "11:TRUE"
@@ -283,6 +368,42 @@
                             "Transitive" = "11:FALSE"
                                 "Keys"
                                 {
+                                    "{60EA8692-D2D5-43EB-80DC-7906BF13D6EF}:_251F0E70A888495AA5EF59B9AE55BCC3"
+                                    {
+                                    "Name" = "8:InfraSonarAgent"
+                                    "Condition" = "8:"
+                                    "AlwaysCreate" = "11:FALSE"
+                                    "DeleteAtUninstall" = "11:FALSE"
+                                    "Transitive" = "11:FALSE"
+                                        "Keys"
+                                        {
+                                            "{60EA8692-D2D5-43EB-80DC-7906BF13D6EF}:_63BEC4BD80EB4708852CE2DC7C358C85"
+                                            {
+                                            "Name" = "8:CheckInterval"
+                                            "Condition" = "8:"
+                                            "AlwaysCreate" = "11:FALSE"
+                                            "DeleteAtUninstall" = "11:FALSE"
+                                            "Transitive" = "11:FALSE"
+                                                "Keys"
+                                                {
+                                                }
+                                                "Values"
+                                                {
+                                                }
+                                            }
+                                        }
+                                        "Values"
+                                        {
+                                            "{ADCFDA98-8FDD-45E4-90BC-E3D20B029870}:_C055FC7C893E4AF187FA8CCC73545A4F"
+                                            {
+                                            "Name" = "8:Token"
+                                            "Condition" = "8:"
+                                            "Transitive" = "11:FALSE"
+                                            "ValueTypes" = "3:1"
+                                            "Value" = "8:"
+                                            }
+                                        }
+                                    }
                                 }
                                 "Values"
                                 {
