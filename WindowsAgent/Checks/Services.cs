@@ -31,7 +31,6 @@ namespace WindowsAgent.Checks
                 items[index] = new Item
                 {
                     ["name"] = service.ServiceName,
-                    ["Description"] = Convert.ToString(mo["Description"]),
                     ["DesktopInteract"] = Convert.ToBoolean(mo["DesktopInteract"]),
                     ["DisplayName"] = Convert.ToString(mo["DisplayName"]),
                     ["ExitCode"] = Convert.ToInt32(mo["ExitCode"]),
