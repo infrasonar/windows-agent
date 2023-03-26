@@ -14,6 +14,10 @@ namespace WindowsAgent
         private static Checks.System _systemCheck = new Checks.System();
         private static Checks.Services _servicesCheck = new Checks.Services();
         private static Checks.Software _softwareCheck = new Checks.Software();
+        private static Checks.Volume _volumeCheck = new Checks.Volume();
+        private static Checks.Processs _processCheck = new Checks.Processs();
+        private static Checks.Network _networkCheck = new Checks.Network();
+
 
         public InfraSonarAgent()
         {
@@ -75,6 +79,9 @@ namespace WindowsAgent
             _systemCheck.Start();
             _servicesCheck.Start();
             _softwareCheck.Start();
+            _volumeCheck.Start();
+            _processCheck.Start();
+            _networkCheck.Start();
         }
 
         protected override void OnStop()

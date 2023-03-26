@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.Win32;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 
@@ -19,16 +20,50 @@ namespace WindowsAgent.Checks
         public override CheckResult Run()
         {
             var data = new CheckResult();
-            Item[] items = new Item[1];
+            List<Item> items = new List<Item>();
+            List<string> names = new List<string>();
 
-            items[0] = new Item
+            List<string> registry_keys = new List<string>
             {
-                ["name"] = "time",
-                ["Uptime"] = (int)(Stopwatch.GetTimestamp() / Stopwatch.Frequency),
-                ["UniversalTime"] = (int)(DateTime.Now.ToUniversalTime().Subtract(new DateTime(1970, 1, 1))).TotalSeconds
+                @"SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall",
+                @"SOFTWARE\WOW6432Node\Microsoft\Windows\CurrentVersion\Uninstall"
             };
+            
+            foreach (string registry_key in registry_keys)
+            {
+                using (Microsoft.Win32.RegistryKey key = Microsoft.Win32.Registry.LocalMachine.OpenSubKey(registry_key))
+                {
+                    foreach (string subkey_name in key.GetSubKeyNames())
+                    {
+                        using (Microsoft.Win32.RegistryKey subkey = key.OpenSubKey(subkey_name))
+                        {
+                            string name = (string)subkey.GetValue("DisplayName");
+                            if (name != null & !names.Contains(name))
+                            {
+                                names.Add(name);
 
-            data.AddType("time", items);
+                                Item item = new Item
+                                {
+                                    ["name"] = name,
+                                    ["version"] = (string)subkey.GetValue("DisplayVersion"),
+                                    ["publisher"] = (string)subkey.GetValue("Publisher"),
+                                    ["uninstallCommand"] = (string)subkey.GetValue("UninstallString"),
+                                    ["modifyPath"] = (string)subkey.GetValue("ModifyPath"),
+                                };
+                                string installDate = (string)subkey.GetValue("InstallDate");
+                                if (installDate != null)
+                                {
+                                    item["installedDate"] = (Int32)DateTime.ParseExact(installDate, "yyyyMMdd", null).Subtract(new DateTime(1970, 1, 1)).TotalSeconds;
+                                }
+                                
+                                items.Add(item);
+                            }
+                        }
+                    }
+                }
+            }
+
+            data.AddType("software", items.ToArray());
             return data;
         }
     }
