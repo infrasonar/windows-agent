@@ -30,6 +30,26 @@ namespace WindowsAgent.Checks
                 items[index++] = new Item
                 {
                     ["name"] = process.ProcessName,
+                    // ["CreatingProcessID"] = 
+                    // ["ElapsedTime"] = process.StartTime,
+                    ["HandleCount"] = process.HandleCount,
+                    ["IDProcess"] = process.Id,
+                    // ["PageFileBytes"] =
+                    // ["PageFaultsPersec"] =
+                    // ["PageFileBytes"] =
+                    // ["PageFileBytesPeak"] =
+                    ["PercentPrivilegedTime"] = process.PrivilegedProcessorTime,
+                    ["PercentProcessorTime"] = process.TotalProcessorTime,
+                    ["PercentUserTime"] = process.UserProcessorTime,
+                    // ["PoolNonpagedBytes"] = 
+                    // ["PoolPagedBytes"] = 
+                    ["PriorityBase"] = process.BasePriority,
+                    ["PrivateBytes"] = process.PrivateMemorySize64,
+                    ["ThreadCount"] = process.Threads.Count,
+                    ["VirtualBytes"] = process.VirtualMemorySize64,
+                    ["VirtualBytesPeak"] = process.PeakVirtualMemorySize64,
+                    ["WorkingSet"] = process.WorkingSet64,
+                    ["WorkingSetPeak"] = process.PeakWorkingSet64,
                 };
             }
 

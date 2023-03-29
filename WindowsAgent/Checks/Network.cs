@@ -39,12 +39,25 @@ namespace WindowsAgent.Checks
 
             // foreach (string instancename in instances)
             // {
-            //     var counter = new PerformanceCounter("Network Interface", "Output Queue Length", instancename);
+            //     var BytesReceivedPersec = new PerformanceCounter("Network Interface", "Bytes Received/sec", instancename);
+            //     var BytesSentPersec = new PerformanceCounter("Network Interface", "Bytes Sent/sec", instancename);
+            //     var CurrentBandwidth = new PerformanceCounter("Network Interface", "Current Bandwidth", instancename);
+            //     var PacketsOutboundDiscarded = new PerformanceCounter("Network Interface", "Packets Outbound Discarded", instancename);
+            //     var PacketsOutboundErrors = new PerformanceCounter("Network Interface", "Packets Outbound Errors", instancename);
+            //     var PacketsReceivedDiscarded = new PerformanceCounter("Network Interface", "Packets Received Discarded", instancename);
+            //     var PacketsReceivedErrors = new PerformanceCounter("Network Interface", "Packets Received Errors", instancename);
+            //     var OutputQueueLength = new PerformanceCounter("Network Interface", "Output Queue Length", instancename);
             //     items[index++] = new Item
             //     {
             //         ["name"] = instancename,
-            //         ["OutputQueueLength"] = counter.NextValue()
-
+            //         ["BytesReceivedPersec"] = BytesReceivedPersec.NextValue(),
+            //         ["BytesSentPersec"] = BytesSentPersec.NextValue(),
+            //         ["CurrentBandwidth"] = CurrentBandwidth.NextValue(),
+            //         ["PacketsOutboundDiscarded"] = PacketsOutboundDiscarded.NextValue(),
+            //         ["PacketsOutboundErrors"] = PacketsOutboundErrors.NextValue(),
+            //         ["PacketsReceivedDiscarded"] = PacketsReceivedDiscarded.NextValue(),
+            //         ["PacketsReceivedErrors"] = PacketsReceivedErrors.NextValue(),
+            //         ["OutputQueueLength"] = OutputQueueLength.NextValue(),
             //     };
             // }
 
