@@ -17,6 +17,8 @@ namespace WindowsAgent
         private static Checks.Volume _volumeCheck = new Checks.Volume();
         private static Checks.Processs _processCheck = new Checks.Processs();
         private static Checks.Network _networkCheck = new Checks.Network();
+        private static Checks.Memory _memoryCheck = new Checks.Memory();
+        private static Checks.Processor _processorCheck = new Checks.Processor();
 
 
         public InfraSonarAgent()
@@ -82,6 +84,8 @@ namespace WindowsAgent
             _volumeCheck.Start();
             _processCheck.Start();
             _networkCheck.Start();
+            _memoryCheck.Start();
+            _processorCheck.Start();
         }
 
         protected override void OnStop()

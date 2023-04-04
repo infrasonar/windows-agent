@@ -60,6 +60,8 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Check.cs" />
+    <Compile Include="Checks\Processor.cs" />
+    <Compile Include="Checks\Memory.cs" />
     <Compile Include="Checks\Process.cs" />
     <Compile Include="Checks\Network.cs" />
     <Compile Include="Checks\Volume.cs" />

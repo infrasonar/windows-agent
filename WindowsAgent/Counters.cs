@@ -9,7 +9,7 @@ namespace WindowsAgent
     using Cache = Dictionary<string, Dictionary<string, PerformanceCounter>>;
     
     internal class Counters {
-        public static void Get(string categoryName, Dictionary<string, Dictionary<string, PerformanceCounter>> _cache)
+        public static void Get(string categoryName, Cache _cache)
         {
             PerformanceCounterCategory cat = new PerformanceCounterCategory(categoryName);
             string[] instances = cat.GetInstanceNames();
@@ -48,25 +48,68 @@ namespace WindowsAgent
             }
         }
 
+        public static void GetSingle(string categoryName, Cache _cache)
+        {
+            PerformanceCounterCategory cat = new PerformanceCounterCategory(categoryName);
+            string instancename = categoryName.ToLower();
+
+            if (!_cache.ContainsKey(instancename))
+            {
+                PerformanceCounter[] newCounters = cat.GetCounters();
+                _cache[instancename] = new Dictionary<string, PerformanceCounter>();
+                foreach (PerformanceCounter counter in newCounters)
+                {
+                    _cache[instancename][counter.CounterName] = counter;
+                    counter.NextValue();
+                }
+                
+                // Console.WriteLine("new instances, wait 3000");
+                Thread.Sleep(3000);
+            }
+        }
+
         public static Item[] ToItemList(Dictionary<string, string> counters, Cache _cache)
         {
             int index = 0;
             var data = new CheckResult();
-            Item[] items = new Item[_cache.Count];
+            var hasTotal = _cache.ContainsKey("_Total");
+            Item[] items = new Item[_cache.Count - (hasTotal ? 1 : 0)];
 
             foreach (string instancename in _cache.Keys)
             {
-                var item = new Item
+                if (instancename != "_Total")
                 {
-                    ["name"] = instancename,
-                };
-                foreach (KeyValuePair<string, string> counter in counters)
-                {
-                    item[counter.Key] = _cache[instancename][counter.Value].NextValue();
+                    var item = new Item
+                    {
+                        ["name"] = instancename,
+                    };
+                    foreach (KeyValuePair<string, string> counter in counters)
+                    {
+                        item[counter.Key] = _cache[instancename][counter.Value].NextValue();
+                    }
+                    items[index++] = item;
                 }
-                items[index++] = item;
+
             }
-            
+
+            return items;
+        }
+
+        public static Item[] ToItemListTotal(Dictionary<string, string> counters, Cache _cache)
+        {
+            var data = new CheckResult();
+            Item[] items = new Item[1];
+
+            var item = new Item
+            {
+                ["name"] = "total",
+            };
+            foreach (KeyValuePair<string, string> counter in counters)
+            {
+                item[counter.Key] = _cache["_Total"][counter.Value].NextValue();
+            }
+            items[0] = item;
+
             return items;
         }
     }
