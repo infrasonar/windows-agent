@@ -25,18 +25,21 @@ namespace WindowsAgent.Checks
             Item[] items = new Item[drives.Length];
             foreach (DriveInfo drive in drives)
             {
-                items[index] = new Item
+                var item = new Item
                 {
                     ["name"] = drive.Name.ToLower(),
                     ["IsReady"] = drive.IsReady,
-                    ["TotalSize"] = drive.TotalSize,
-                    ["DriveFormat"] = drive.DriveFormat,
                     ["DriveType"] = (string)drive.DriveType.ToString(),
                     ["RootDirectory"] = (string)drive.RootDirectory.ToString(),
-                    ["TotalFreeSpace"] = drive.TotalFreeSpace,
-                    ["VolumeLabel"] = drive.VolumeLabel,
                 };
-                index++;
+                if (drive.IsReady)
+                {
+                    item["TotalSize"] = drive.TotalSize;
+                    item["DriveFormat"] = drive.DriveFormat;
+                    item["TotalFreeSpace"] = drive.TotalFreeSpace;
+                    item["VolumeLabel"] = drive.VolumeLabel;
+                }
+                items[index++] = item;
             }
 
             data.AddType("volume", items);

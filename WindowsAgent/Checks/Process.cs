@@ -38,9 +38,9 @@ namespace WindowsAgent.Checks
                     // ["PageFaultsPersec"] =
                     // ["PageFileBytes"] =
                     // ["PageFileBytesPeak"] =
-                    ["PercentPrivilegedTime"] = process.PrivilegedProcessorTime,
-                    ["PercentProcessorTime"] = process.TotalProcessorTime,
-                    ["PercentUserTime"] = process.UserProcessorTime,
+                    // ["PercentPrivilegedTime"] = process.PrivilegedProcessorTime,
+                    // ["PercentProcessorTime"] = process.TotalProcessorTime,
+                    // ["PercentUserTime"] = process.UserProcessorTime,
                     // ["PoolNonpagedBytes"] = 
                     // ["PoolPagedBytes"] = 
                     ["PriorityBase"] = process.BasePriority,

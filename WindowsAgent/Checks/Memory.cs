@@ -16,7 +16,7 @@ namespace WindowsAgent.Checks
         public override bool CanRun() { return true; }
         private Dictionary<string, string> counters = new Dictionary<string, string>{
             {"AvailableKBytes", "Available KBytes"},
-            {"PercentCommitedBytesInUse", "% Commited Bytes In Use"},
+            {"PercentCommitedBytesInUse", "% Committed Bytes In Use"},
         };
         private Cache counterCache = new Cache();
 
