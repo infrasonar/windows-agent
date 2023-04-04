@@ -71,6 +71,7 @@
     <Compile Include="Announce.cs" />
     <Compile Include="Logger.cs" />
     <Compile Include="Config.cs" />
+    <Compile Include="Counters.cs" />
     <Compile Include="ProjectInstaller.cs">
       <SubType>Component</SubType>
     </Compile>
