@@ -19,54 +19,35 @@ namespace WindowsAgent.Checks
         public override int DefaultInterval() { return _defaultInterval; }
         public override bool CanRun() { return true; }
 
+        private Dictionary<string, string> counters = new Dictionary<string, string>{
+            {"CreatingProcessID", "Creating Process ID"},
+            {"ElapsedTime", "Elapsed Time"},
+            {"HandleCount", "Handle Count"},
+            {"IDProcess", "ID Process"},
+            {"PageFaultsPersec", "Page Faults/sec"},
+            {"PageFileBytes", "Page File Bytes"},
+            {"PageFileBytesPeak", "Page File Bytes Peak"},
+            {"PercentPrivilegedTime", "% Privileged Time"},
+            {"PercentProcessorTime", "% Processor Time"},
+            {"PercentUserTime", "% User Time"},
+            {"PoolNonpagedBytes", "Pool Nonpaged Bytes"},
+            {"PoolPagedBytes", "Pool Paged Bytes"},
+            {"PriorityBase", "Priority Base"},
+            {"PrivateBytes", "Private Bytes"},
+            {"ThreadCount", "Thread Count"},
+            {"VirtualBytes", "Virtual Bytes"},
+            {"VirtualBytesPeak", "Virtual Bytes Peak"},
+            {"WorkingSet", "Working Set"},
+            {"WorkingSetPeak", "Working Set Peak"},
+        };
+
+        private Dictionary<string, Dictionary<string, PerformanceCounter>> counterCache = new Dictionary<string, Dictionary<string, PerformanceCounter>>();
+
         public override CheckResult Run()
         {
-            int index = 0;
             var data = new CheckResult();
-            Process[] processes = Process.GetProcesses();
-            Item[] items = new Item[processes.Length];
-            foreach (Process process in processes)
-            {
-                items[index++] = new Item
-                {
-                    ["name"] = process.ProcessName,
-                    // ["CreatingProcessID"] = 
-                    // ["ElapsedTime"] = process.StartTime,
-                    ["HandleCount"] = process.HandleCount,
-                    ["IDProcess"] = process.Id,
-                    // ["PageFileBytes"] =
-                    // ["PageFaultsPersec"] =
-                    // ["PageFileBytes"] =
-                    // ["PageFileBytesPeak"] =
-                    // ["PercentPrivilegedTime"] = process.PrivilegedProcessorTime,
-                    // ["PercentProcessorTime"] = process.TotalProcessorTime,
-                    // ["PercentUserTime"] = process.UserProcessorTime,
-                    // ["PoolNonpagedBytes"] = 
-                    // ["PoolPagedBytes"] = 
-                    ["PriorityBase"] = process.BasePriority,
-                    ["PrivateBytes"] = process.PrivateMemorySize64,
-                    ["ThreadCount"] = process.Threads.Count,
-                    ["VirtualBytes"] = process.VirtualMemorySize64,
-                    ["VirtualBytesPeak"] = process.PeakVirtualMemorySize64,
-                    ["WorkingSet"] = process.WorkingSet64,
-                    ["WorkingSetPeak"] = process.PeakWorkingSet64,
-                };
-            }
-
-            // PerformanceCounterCategory cat = new PerformanceCounterCategory("Process");
-            // String[] instances = cat.GetInstanceNames();
-            // Item[] items = new Item[instances.Length];
-
-            // foreach (string instancename in instances)
-            // {
-            //     var counter = new PerformanceCounter("Process", "PercentProccesorTime", instancename);
-            //     items[index++] = new Item
-            //     {
-            //         ["name"] = instancename,
-            //         ["PercentProccesorTime"] = counter.NextValue()
-
-            //     };
-            // }
+            Counters.Get("Process", counterCache);
+            Item[] items = Counters.ToItemList(counters, counterCache);
 
             data.AddType("process", items);
             return data;
