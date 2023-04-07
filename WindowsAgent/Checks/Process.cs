@@ -1,25 +1,18 @@
-﻿using Microsoft.Win32;
-using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Diagnostics;
-using System.Net.NetworkInformation;
-using System.IO;
 
 
 namespace WindowsAgent.Checks
 {
     using Item = Dictionary<string, object>;
+    using Cache = Dictionary<string, Dictionary<string, PerformanceCounter>>;
 
     internal class Processs : Check
     {
         private const int _defaultInterval = 5;  // Interval in minutes, can be overwritten with REG key.
-        private const string _key = "process";  // Check key.        
+        private const string _key = "process";  // Check key.
 
-        public override string Key() { return _key; }
-        public override int DefaultInterval() { return _defaultInterval; }
-        public override bool CanRun() { return true; }
-
-        private Dictionary<string, string> counters = new Dictionary<string, string>{
+        private readonly Dictionary<string, string> _counters = new Dictionary<string, string>{
             {"CreatingProcessID", "Creating Process ID"},
             {"ElapsedTime", "Elapsed Time"},
             {"HandleCount", "Handle Count"},
@@ -39,15 +32,18 @@ namespace WindowsAgent.Checks
             {"VirtualBytesPeak", "Virtual Bytes Peak"},
             {"WorkingSet", "Working Set"},
             {"WorkingSetPeak", "Working Set Peak"},
-        };
+        }; 
+        private readonly Cache _counterCache = new Cache();
 
-        private Dictionary<string, Dictionary<string, PerformanceCounter>> counterCache = new Dictionary<string, Dictionary<string, PerformanceCounter>>();
+        public override string Key() { return _key; }
+        public override int DefaultInterval() { return _defaultInterval; }
+        public override bool CanRun() { return true; }
 
         public override CheckResult Run()
         {
             var data = new CheckResult();
-            Counters.Get("Process", counterCache);
-            Item[] items = Counters.ToItemList(counters, counterCache);
+            Counters.Get("Process", _counterCache);
+            Item[] items = Counters.ToItemList(_counters, _counterCache);
 
             data.AddType("process", items);
             return data;
