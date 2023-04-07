@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Diagnostics;
 
 namespace WindowsAgent.Checks
@@ -11,22 +10,23 @@ namespace WindowsAgent.Checks
     {
         private const int _defaultInterval = 5;  // Interval in minutes, can be overwritten with REG key.
         private const string _key = "memory";  // Check key.        
-        public override string Key() { return _key; }
-        public override int DefaultInterval() { return _defaultInterval; }
-        public override bool CanRun() { return true; }
-        private Dictionary<string, string> counters = new Dictionary<string, string>{
+
+        private readonly Dictionary<string, string> _counters = new Dictionary<string, string>{
             {"AvailableKBytes", "Available KBytes"},
             {"PercentCommitedBytesInUse", "% Committed Bytes In Use"},
         };
-        private Cache counterCache = new Cache();
+        private readonly Cache _counterCache = new Cache();
+
+        public override string Key() { return _key; }
+        public override int DefaultInterval() { return _defaultInterval; }
+        public override bool CanRun() { return true; }
 
         public override CheckResult Run()
         {
-
             var data = new CheckResult();
 
-            Counters.GetSingle("Memory", counterCache);
-            Item[] items = Counters.ToItemList(counters, counterCache);
+            Counters.GetSingle("Memory", _counterCache);
+            Item[] items = Counters.ToItemList(_counters, _counterCache);
 
             data.AddType("memory", items);
 

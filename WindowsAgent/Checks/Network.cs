@@ -1,9 +1,5 @@
-﻿using Microsoft.Win32;
-using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Diagnostics;
-using System.Net.NetworkInformation;
-using System.IO;
 
 
 namespace WindowsAgent.Checks
@@ -16,10 +12,7 @@ namespace WindowsAgent.Checks
         private const int _defaultInterval = 5;  // Interval in minutes, can be overwritten with REG key.
         private const string _key = "network";  // Check key.        
 
-        public override string Key() { return _key; }
-        public override int DefaultInterval() { return _defaultInterval; }
-        public override bool CanRun() { return true; }
-        private Dictionary<string, string> counters = new Dictionary<string, string>{
+        private readonly Dictionary<string, string> _counters = new Dictionary<string, string>{
             {"BytesReceivedPersec", "Bytes Received/sec"},
             {"BytesSentPersec", "Bytes Sent/sec"},
             {"CurrentBandwidth", "Current Bandwidth"},
@@ -30,14 +23,16 @@ namespace WindowsAgent.Checks
             {"OutputQueueLength", "Output Queue Length"},
         };
 
-        private Cache counterCache = new Cache();
+        private readonly Cache _counterCache = new Cache();
+        public override string Key() { return _key; }
+        public override int DefaultInterval() { return _defaultInterval; }
+        public override bool CanRun() { return true; }
 
         public override CheckResult Run()
         {
-
             var data = new CheckResult();
-            Counters.Get("Network Interface", counterCache);
-            Item[] items = Counters.ToItemList(counters, counterCache);
+            Counters.Get("Network Interface", _counterCache);
+            Item[] items = Counters.ToItemList(_counters, _counterCache);
 
             data.AddType("interface", items);
             return data;

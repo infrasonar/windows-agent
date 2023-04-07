@@ -56,7 +56,7 @@ namespace WindowsAgent
             }
             catch (Exception ex)
             {
-                throw new Exception(String.Format("Failed to get asset name: {0}", ex.Message));
+                throw new Exception(string.Format("Failed to get asset name: {0}", ex.Message));
             }
         }
 
@@ -88,7 +88,7 @@ namespace WindowsAgent
             }
             catch (Exception ex)
             {
-                throw new Exception(String.Format("Failed to read container Id: {0}", ex.Message));
+                throw new Exception(string.Format("Failed to read container Id: {0}", ex.Message));
             }
 
             try
@@ -116,7 +116,7 @@ namespace WindowsAgent
             }
             catch (Exception ex)
             {
-                throw new Exception(String.Format("Failed to create asset: {0}", ex.Message));
+                throw new Exception(string.Format("Failed to create asset: {0}", ex.Message));
             }
 
             try
@@ -135,7 +135,7 @@ namespace WindowsAgent
             }
             catch (Exception ex)
             {
-                Logger.Write(String.Format("Failed to set collector: {0}", ex.Message), EventLogEntryType.Error, EventId.AssignCollectorFailed);
+                Logger.Write(string.Format("Failed to set collector: {0}", ex.Message), EventLogEntryType.Error, EventId.AssignCollectorFailed);
             }
 
             try
@@ -159,7 +159,7 @@ namespace WindowsAgent
             }
             catch (Exception ex)
             {
-                Logger.Write(String.Format("Failed to set kind: {0}", ex.Message), EventLogEntryType.Error, EventId.AssignKindFailed);
+                Logger.Write(string.Format("Failed to set kind: {0}", ex.Message), EventLogEntryType.Error, EventId.AssignKindFailed);
             }
 
             Config.SetAssetId(assetId);

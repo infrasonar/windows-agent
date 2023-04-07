@@ -17,7 +17,7 @@ namespace WindowsAgent
 
             foreach (string key in _cache.Keys)
             {
-                if (Array.IndexOf(instances, key)  == -1)
+                if (Array.IndexOf(instances, key) == -1)
                 {
                     _cache.Remove(key);
                 }
@@ -34,16 +34,14 @@ namespace WindowsAgent
                         _cache[instancename][counter.CounterName] = counter;
                         counter.NextValue();
                     }
-                    if (!newInstances)
-                    {
-                        newInstances = true;
-                    }
+                    newInstances = true;
                 }
             }
 
             if (newInstances)
             {
-                // Console.WriteLine("new instances, wait 3000");
+                // We need a sleep when new instances were found;
+                // This ensures we have counters over a small time window;
                 Thread.Sleep(3000);
             }
         }
@@ -62,8 +60,9 @@ namespace WindowsAgent
                     _cache[instancename][counter.CounterName] = counter;
                     counter.NextValue();
                 }
-                
-                // Console.WriteLine("new instances, wait 3000");
+
+                // We need a sleep when new instances were found;
+                // This ensures we have counters over a small time window;
                 Thread.Sleep(3000);
             }
         }
@@ -71,7 +70,6 @@ namespace WindowsAgent
         public static Item[] ToItemList(Dictionary<string, string> counters, Cache _cache)
         {
             int index = 0;
-            var data = new CheckResult();
             var hasTotal = _cache.ContainsKey("_Total");
             Item[] items = new Item[_cache.Count - (hasTotal ? 1 : 0)];
 
@@ -89,7 +87,6 @@ namespace WindowsAgent
                     }
                     items[index++] = item;
                 }
-
             }
 
             return items;
@@ -97,7 +94,6 @@ namespace WindowsAgent
 
         public static Item[] ToItemListTotal(Dictionary<string, string> counters, Cache _cache)
         {
-            var data = new CheckResult();
             Item[] items = new Item[1];
 
             var item = new Item

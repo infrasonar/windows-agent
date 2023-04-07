@@ -1,7 +1,6 @@
 ﻿using Microsoft.Win32;
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 
 
 namespace WindowsAgent.Checks
@@ -31,11 +30,11 @@ namespace WindowsAgent.Checks
             
             foreach (string registry_key in registry_keys)
             {
-                using (Microsoft.Win32.RegistryKey key = Microsoft.Win32.Registry.LocalMachine.OpenSubKey(registry_key))
+                using (RegistryKey key = Registry.LocalMachine.OpenSubKey(registry_key))
                 {
                     foreach (string subkey_name in key.GetSubKeyNames())
                     {
-                        using (Microsoft.Win32.RegistryKey subkey = key.OpenSubKey(subkey_name))
+                        using (RegistryKey subkey = key.OpenSubKey(subkey_name))
                         {
                             string name = (string)subkey.GetValue("DisplayName");
                             if (name != null & !names.Contains(name))
@@ -53,7 +52,7 @@ namespace WindowsAgent.Checks
                                 string installDate = (string)subkey.GetValue("InstallDate");
                                 if (installDate != null)
                                 {
-                                    item["installedDate"] = (Int32)DateTime.ParseExact(installDate, "yyyyMMdd", null).Subtract(new DateTime(1970, 1, 1)).TotalSeconds;
+                                    item["installedDate"] = (int)DateTime.ParseExact(installDate, "yyyyMMdd", null).Subtract(new DateTime(1970, 1, 1)).TotalSeconds;
                                 }
                                 
                                 items.Add(item);

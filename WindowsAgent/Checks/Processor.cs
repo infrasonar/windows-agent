@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Diagnostics;
 
 namespace WindowsAgent.Checks
@@ -11,22 +10,23 @@ namespace WindowsAgent.Checks
     {
         private const int _defaultInterval = 5;  // Interval in minutes, can be overwritten with REG key.
         private const string _key = "processor";  // Check key.        
+
+        private readonly Dictionary<string, string> _counters = new Dictionary<string, string>{
+            {"PercentProcessorTime", "% Processor Time"},
+        };
+        private readonly Cache _counterCache = new Cache();
+
         public override string Key() { return _key; }
         public override int DefaultInterval() { return _defaultInterval; }
         public override bool CanRun() { return true; }
-        private Dictionary<string, string> counters = new Dictionary<string, string>{
-            {"PercentProcessorTime", "% Processor Time"},
-        };
-        private Cache counterCache = new Cache();
 
         public override CheckResult Run()
         {
-
             var data = new CheckResult();
 
-            Counters.Get("Processor", counterCache);
-            Item[] items = Counters.ToItemList(counters, counterCache);
-            Item[] itemsTotal = Counters.ToItemListTotal(counters, counterCache);
+            Counters.Get("Processor", _counterCache);
+            Item[] items = Counters.ToItemList(_counters, _counterCache);
+            Item[] itemsTotal = Counters.ToItemListTotal(_counters, _counterCache);
 
             data.AddType("processor", items);
             data.AddType("processorTotal", itemsTotal);
