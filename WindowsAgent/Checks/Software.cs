@@ -44,17 +44,34 @@ namespace WindowsAgent.Checks
                                 Item item = new Item
                                 {
                                     ["name"] = name,
-                                    ["version"] = (string)subkey.GetValue("DisplayVersion"),
-                                    ["publisher"] = (string)subkey.GetValue("Publisher"),
-                                    ["uninstallCommand"] = (string)subkey.GetValue("UninstallString"),
-                                    ["modifyPath"] = (string)subkey.GetValue("ModifyPath"),
+                                    ["Version"] = (string)subkey.GetValue("DisplayVersion"),
+                                    ["Publisher"] = (string)subkey.GetValue("Publisher"),
+                                    ["UninstallCommand"] = (string)subkey.GetValue("UninstallString"),
+                                    ["ModifyPath"] = (string)subkey.GetValue("ModifyPath"),
                                 };
-                                string installDate = (string)subkey.GetValue("InstallDate");
-                                if (installDate != null)
+                                var installDate2 = subkey.GetValue("InstallDate2");
+                                if (installDate2 != null)
                                 {
-                                    item["installedDate"] = (int)DateTime.ParseExact(installDate, "yyyyMMdd", null).Subtract(new DateTime(1970, 1, 1)).TotalSeconds;
+                                    if (installDate2.GetType() == typeof(int))
+                                    {
+                                        item["InstallDate"] = (int)installDate2;
+                                    }
+                                } else
+                                {
+                                    var installDate = subkey.GetValue("InstallDate");
+                                    if (installDate != null)
+                                    {
+                                        if (installDate.GetType() == typeof(string))
+                                        {
+                                            item["InstallDate"] = (int)DateTime.ParseExact((string)installDate, "yyyyMMdd", null).Subtract(new DateTime(1970, 1, 1)).TotalSeconds;
+                                        }
+                                        else if (installDate.GetType() == typeof(int))
+                                        {
+                                            item["InstallDate"] = (int)installDate;
+                                        }
+                                    }
                                 }
-                                
+
                                 items.Add(item);
                             }
                         }
