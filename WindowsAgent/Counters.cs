@@ -16,14 +16,6 @@ namespace WindowsAgent
             string[] instances = cat.GetInstanceNames();
             bool newInstances = false;
 
-            foreach (string key in _cache.Keys.ToList())
-            {
-                if (Array.IndexOf(instances, key) == -1)
-                {
-                    _cache.Remove(key);
-                }
-            }
-
             foreach (string instancename in instances)
             {
                 if (!_cache.ContainsKey(instancename))
@@ -44,6 +36,18 @@ namespace WindowsAgent
                 // We need a sleep when new instances were found;
                 // This ensures we have counters over a small time window;
                 Thread.Sleep(3000);
+
+                // retrieve instance names again
+                instances = cat.GetInstanceNames();
+            }
+
+            // cleanup
+            foreach (string key in _cache.Keys.ToList())
+            {
+                if (Array.IndexOf(instances, key) == -1)
+                {
+                    _cache.Remove(key);
+                }
             }
         }
 
