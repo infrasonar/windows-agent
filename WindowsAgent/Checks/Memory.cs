@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 
 namespace WindowsAgent.Checks
@@ -11,12 +12,7 @@ namespace WindowsAgent.Checks
         private const int _defaultInterval = 5;  // Interval in minutes, can be overwritten with REG key.
         private const string _key = "memory";  // Check key.        
 
-        private readonly Dictionary<string, string> _counters = new Dictionary<string, string>{
-            {"AvailableKBytes", "Available KBytes"},
-            {"PercentCommitedBytesInUse", "% Committed Bytes In Use"},
-        };
         private readonly Cache _counterCache = new Cache();
-
         public override string Key() { return _key; }
         public override int DefaultInterval() { return _defaultInterval; }
         public override bool CanRun() { return true; }
@@ -24,9 +20,20 @@ namespace WindowsAgent.Checks
         public override CheckResult Run()
         {
             var data = new CheckResult();
-
+            int index = 0;
             Counters.GetSingle("Memory", _counterCache);
-            Item[] items = Counters.ToItemList(_counters, _counterCache);
+            Item[] items = new Item[_counterCache.Count];
+
+            foreach (var instance in _counterCache)
+            {
+                var item = new Item
+                {
+                    ["name"] = instance.Key,
+                    ["AvailableKBytes"] = Convert.ToInt32(instance.Value["Available KBytes"].NextValue()),
+                    ["PercentCommitedBytesInUse"] = instance.Value["% Committed Bytes In Use"].NextValue(),
+                };
+                items[index++] = item;
+            }
 
             data.AddType("memory", items);
 

@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Linq;
 using System.Threading;
 
 namespace WindowsAgent
@@ -15,7 +16,7 @@ namespace WindowsAgent
             string[] instances = cat.GetInstanceNames();
             bool newInstances = false;
 
-            foreach (string key in _cache.Keys)
+            foreach (string key in _cache.Keys.ToList())
             {
                 if (Array.IndexOf(instances, key) == -1)
                 {
