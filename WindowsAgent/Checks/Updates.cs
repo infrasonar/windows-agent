@@ -32,7 +32,7 @@ namespace WindowsAgent.Checks
                     ["name"] = mo["HotFixID"],
                     ["Description"] = mo["Description"],
                     ["FixComments"] = mo["FixComments"],
-                    ["InstalledOn"] = (int)DateTime.ParseExact((string)mo["InstalledOn"], "MM/dd/yyyy", null).Subtract(new DateTime(1970, 1, 1)).TotalSeconds,
+                    ["InstalledOn"] = (int)DateTime.ParseExact((string)mo["InstalledOn"], "M/d/yyyy", null).Subtract(new DateTime(1970, 1, 1)).TotalSeconds,
                     ["ServicePackInEffect"] = mo["ServicePackInEffect"],
                 };
             }
