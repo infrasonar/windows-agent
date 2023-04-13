@@ -12,7 +12,17 @@ namespace WindowsAgent.Checks
     {
         private const int _defaultInterval = 5;  // Interval in minutes, can be overwritten with REG key.
         private const string _key = "network";  // Check key.        
-
+        private readonly string _counterCategrory = "Network Interface";
+        private readonly string[] _counterNames = {
+            "Bytes Received/sec",
+            "Bytes Sent/sec",
+            "Current Bandwidth",
+            "Packets Outbound Discarded",
+            "Packets Outbound Errors",
+            "Packets Received Discarded",
+            "Packets Received Errors",
+            "Output Queue Length",
+        }; 
         private readonly Cache _counterCache = new Cache();
         public override string Key() { return _key; }
         public override int DefaultInterval() { return _defaultInterval; }
@@ -22,7 +32,7 @@ namespace WindowsAgent.Checks
         {
             var data = new CheckResult();
             int index = 0;
-            Counters.Get("Network Interface", _counterCache);
+            Counters.Get(_counterCategrory, _counterNames, _counterCache);
             Item[] items = new Item[_counterCache.Count];
 
             foreach (var instance in _counterCache)

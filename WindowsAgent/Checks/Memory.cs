@@ -12,6 +12,11 @@ namespace WindowsAgent.Checks
         private const int _defaultInterval = 5;  // Interval in minutes, can be overwritten with REG key.
         private const string _key = "memory";  // Check key.        
 
+        private readonly string _counterCategrory = "Memory";
+        private readonly string[] _counterNames = {
+            "Available KBytes",
+            "% Committed Bytes In Use",
+        };
         private readonly Cache _counterCache = new Cache();
         public override string Key() { return _key; }
         public override int DefaultInterval() { return _defaultInterval; }
@@ -21,7 +26,7 @@ namespace WindowsAgent.Checks
         {
             var data = new CheckResult();
             int index = 0;
-            Counters.GetSingle("Memory", _counterCache);
+            Counters.GetSingle(_counterCategrory, _counterNames, _counterCache);
             Item[] items = new Item[_counterCache.Count];
 
             foreach (var instance in _counterCache)

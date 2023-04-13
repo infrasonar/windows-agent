@@ -64,6 +64,7 @@
     <Compile Include="Checks\Memory.cs" />
     <Compile Include="Checks\Process.cs" />
     <Compile Include="Checks\Network.cs" />
+    <Compile Include="Checks\Updates.cs" />
     <Compile Include="Checks\Volume.cs" />
     <Compile Include="Checks\Software.cs" />
     <Compile Include="Checks\Services.cs" />

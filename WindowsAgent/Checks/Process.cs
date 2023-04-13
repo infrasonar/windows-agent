@@ -15,27 +15,27 @@ namespace WindowsAgent.Checks
     {
         private const int _defaultInterval = 5;  // Interval in minutes, can be overwritten with REG key.
         private const string _key = "process";  // Check key.
-
-        private readonly Dictionary<string, string> _counters = new Dictionary<string, string>{
-            {"CreatingProcessID", "Creating Process ID"},
-            {"ElapsedTime", "Elapsed Time"},
-            {"HandleCount", "Handle Count"},
-            {"IDProcess", "ID Process"},
-            {"PageFaultsPersec", "Page Faults/sec"},
-            {"PageFileBytes", "Page File Bytes"},
-            {"PageFileBytesPeak", "Page File Bytes Peak"},
-            {"PercentPrivilegedTime", "% Privileged Time"},
-            {"PercentProcessorTime", "% Processor Time"},
-            {"PercentUserTime", "% User Time"},
-            {"PoolNonpagedBytes", "Pool Nonpaged Bytes"},
-            {"PoolPagedBytes", "Pool Paged Bytes"},
-            {"PriorityBase", "Priority Base"},
-            {"PrivateBytes", "Private Bytes"},
-            {"ThreadCount", "Thread Count"},
-            {"VirtualBytes", "Virtual Bytes"},
-            {"VirtualBytesPeak", "Virtual Bytes Peak"},
-            {"WorkingSet", "Working Set"},
-            {"WorkingSetPeak", "Working Set Peak"},
+        private readonly string _counterCategrory = "Process";
+        private readonly string[] _counterNames = {
+            "Creating Process ID",
+            "Elapsed Time",
+            "Handle Count",
+            "ID Process",
+            "Page Faults/sec",
+            "Page File Bytes",
+            "Page File Bytes Peak",
+            "% Privileged Time",
+            "% Processor Time",
+            "% User Time",
+            "Pool Nonpaged Bytes",
+            "Pool Paged Bytes",
+            "Priority Base",
+            "Private Bytes",
+            "Thread Count",
+            "Virtual Bytes",
+            "Virtual Bytes Peak",
+            "Working Set",
+            "Working Set Peak",
         }; 
         private readonly Cache _counterCache = new Cache();
 
@@ -47,26 +47,46 @@ namespace WindowsAgent.Checks
         {
             var data = new CheckResult();
             var index = 0;
-            Counters.Get("Process", _counterCache);
+            Counters.Get(_counterCategrory, _counterNames, _counterCache);
 
             Aggr aggr = new Aggr();
             foreach (var instance in _counterCache)
             {
                 if (instance.Key != "_Total")
                 {
-                    string name = instance.Key.Split('#')[0];
-                    if (!aggr.ContainsKey(name))
+                    var counterValues = new Dictionary<string, float>();
+                    var hasError = false;
+                    foreach (var counter in instance.Value)
                     {
-                        aggr[name] = new AggrItem();
-                        foreach (var counter in _counters)
+                        try
                         {
-                            aggr[name][counter.Value] = new List<float>();
+                            counterValues[counter.Key] = counter.Value.NextValue();
+                        }
+                        catch
+                        {
+                            string e = string.Format("Failed to retrieve counter value ({0}-{1})", instance.Key, counter.Key);
+                            Logger.Write(e, EventLogEntryType.Warning, EventId.InitRegistry);
+                            hasError = true;
+                            break;
                         }
                     }
 
-                    foreach (var counter in _counters)
+                    if (!hasError)
                     {
-                        aggr[name][counter.Value].Add(instance.Value[counter.Value].NextValue());
+                        string name = instance.Key.Split('#')[0];
+                        if (!aggr.ContainsKey(name))
+                        {
+                            aggr[name] = new AggrItem();
+                            foreach (var counter in instance.Value)
+                            {
+                                aggr[name][counter.Key] = new List<float>();
+                            }
+                        }
+
+                        foreach (var counterValue in counterValues)
+                        {
+                            aggr[name][counterValue.Key].Add(counterValue.Value);
+                        }
                     }
                 }
             }

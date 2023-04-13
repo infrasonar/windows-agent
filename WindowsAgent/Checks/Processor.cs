@@ -9,10 +9,10 @@ namespace WindowsAgent.Checks
     internal class Processor : Check
     {
         private const int _defaultInterval = 5;  // Interval in minutes, can be overwritten with REG key.
-        private const string _key = "processor";  // Check key.        
-
-        private readonly Dictionary<string, string> _counters = new Dictionary<string, string>{
-            {"PercentProcessorTime", "% Processor Time"},
+        private const string _key = "processor";  // Check key.
+        private readonly string _counterCategrory = "Processor";
+        private readonly string[] _counterNames = {
+            "% Processor Time",
         };
         private readonly Cache _counterCache = new Cache();
 
@@ -23,10 +23,31 @@ namespace WindowsAgent.Checks
         public override CheckResult Run()
         {
             var data = new CheckResult();
+            var index = 0;
 
-            Counters.Get("Processor", _counterCache);
-            Item[] items = Counters.ToItemList(_counters, _counterCache);
-            Item[] itemsTotal = Counters.ToItemListTotal(_counters, _counterCache);
+            Counters.Get(_counterCategrory, _counterNames, _counterCache);
+            Item[] items = new Item[_counterCache.Count - 1];
+            Item[] itemsTotal = new Item[1];
+
+            foreach (var instance in _counterCache)
+            {
+                if (instance.Key != "_Total")
+                {
+                    items[index++] = new Item
+                    {
+                        ["name"] = instance.Key,
+                        ["PercentProcessorTime"] = instance.Value["% Processor Time"].NextValue(),
+                    };
+                }
+                else
+                {
+                    itemsTotal[0] = new Item
+                    {
+                        ["name"] = "total",
+                        ["PercentProcessorTime"] = instance.Value["% Processor Time"].NextValue(),
+                    };
+                }
+            }
 
             data.AddType("processor", items);
             data.AddType("processorTotal", itemsTotal);
