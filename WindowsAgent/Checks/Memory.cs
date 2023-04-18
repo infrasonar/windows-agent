@@ -4,8 +4,8 @@ using System.Diagnostics;
 
 namespace WindowsAgent.Checks
 {
-    using Item = Dictionary<string, object>;
     using Cache = Dictionary<string, Dictionary<string, PerformanceCounter>>;
+    using Item = Dictionary<string, object>;
 
     internal class Memory : Check
     {

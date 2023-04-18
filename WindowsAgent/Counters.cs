@@ -9,7 +9,8 @@ namespace WindowsAgent
     using Cache = Dictionary<string, Dictionary<string, PerformanceCounter>>;
     using CacheItem = Dictionary<string, PerformanceCounter>;
 
-    internal class Counters {
+    internal class Counters
+    {
 
         private static CacheItem GetCountersForItem(PerformanceCounterCategory cat, string instance, string[] counterNames)
         {
@@ -42,8 +43,11 @@ namespace WindowsAgent
                     }
                     catch
                     {
-                        string e = string.Format("Failed to retrieve initial counter values for {0} : {1}", categoryName, instance);
-                        Logger.Write(e, EventLogEntryType.Warning, EventId.InitRegistry);
+                        if (Config.IsDebug())
+                        {
+                            string e = string.Format("Failed to retrieve initial counter values for {0} : {1}", categoryName, instance);
+                            Logger.Write(e, EventLogEntryType.Warning, EventId.InitRegistry);
+                        }
                     }
                 }
             }

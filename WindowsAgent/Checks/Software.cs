@@ -27,7 +27,7 @@ namespace WindowsAgent.Checks
                 @"SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall",
                 @"SOFTWARE\WOW6432Node\Microsoft\Windows\CurrentVersion\Uninstall"
             };
-            
+
             foreach (string registry_key in registry_keys)
             {
                 using (RegistryKey key = Registry.LocalMachine.OpenSubKey(registry_key))
@@ -56,7 +56,8 @@ namespace WindowsAgent.Checks
                                     {
                                         item["InstallDate"] = (int)installDate2;
                                     }
-                                } else
+                                }
+                                else
                                 {
                                     var installDate = subkey.GetValue("InstallDate");
                                     if (installDate != null)
