@@ -5,8 +5,8 @@ using System.Diagnostics;
 
 namespace WindowsAgent.Checks
 {
-    using Cache = Dictionary<string, Dictionary<string, PerformanceCounter>>;
     using Item = Dictionary<string, object>;
+    using Cache = Dictionary<string, Dictionary<string, PerformanceCounter>>;
 
     internal class Network : Check
     {
@@ -22,7 +22,7 @@ namespace WindowsAgent.Checks
             "Packets Received Discarded",
             "Packets Received Errors",
             "Output Queue Length",
-        };
+        }; 
         private readonly Cache _counterCache = new Cache();
         public override string Key() { return _key; }
         public override int DefaultInterval() { return _defaultInterval; }

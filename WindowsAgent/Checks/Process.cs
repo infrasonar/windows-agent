@@ -1,14 +1,15 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 
 
 namespace WindowsAgent.Checks
 {
+    using Item = Dictionary<string, object>;
+    using Cache = Dictionary<string, Dictionary<string, PerformanceCounter>>;
     using Aggr = Dictionary<string, Dictionary<string, List<float>>>;
     using AggrItem = Dictionary<string, List<float>>;
-    using Cache = Dictionary<string, Dictionary<string, PerformanceCounter>>;
-    using Item = Dictionary<string, object>;
 
     internal class Processs : Check
     {
@@ -35,7 +36,7 @@ namespace WindowsAgent.Checks
             "Virtual Bytes Peak",
             "Working Set",
             "Working Set Peak",
-        };
+        }; 
         private readonly Cache _counterCache = new Cache();
 
         public override string Key() { return _key; }
