@@ -119,12 +119,12 @@ namespace WindowsAgent
                     int interval = Convert.ToInt32(key.GetValue(checkKey, defaultInterval).ToString());
                     if (interval < 0 || interval > 60 * 24)
                     {
-                        Logger.Write(string.Format("Invalid interval for {0}; using the default ({1}s)", checkKey, defaultInterval), EventLogEntryType.Error, EventId.InvalidInterval);
+                        Logger.Write(string.Format("Invalid interval for {0}; using the default ({1} minutes)", checkKey, defaultInterval), EventLogEntryType.Error, EventId.InvalidInterval);
                         return defaultInterval;
                     }
                     if (interval != defaultInterval)
                     {
-                        Logger.Write(string.Format("Using interval {1}s for check {0}", interval, checkKey), EventLogEntryType.Information, EventId.None);
+                        Logger.Write(string.Format("Changed interval to {0} minute{1} for check {2}", interval, interval == 1 ? "" : "s", checkKey), EventLogEntryType.Information, EventId.None);
                     }
                     return interval;
                 }
