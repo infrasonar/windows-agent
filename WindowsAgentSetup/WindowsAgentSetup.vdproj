@@ -318,7 +318,7 @@
         "Name" = "8:Microsoft Visual Studio"
         "ProductName" = "8:InfraSonar Windows Agent"
         "ProductCode" = "8:{8B9CD4A4-7CF1-444F-9288-B7F8EEDDAA3C}"
-        "PackageCode" = "8:{CBEE6F02-41B3-4F8B-B37E-F0973CB45EF3}"
+        "PackageCode" = "8:{BB3F132D-EB88-4504-8986-4D14847899CC}"
         "UpgradeCode" = "8:{A9CF867C-F6A2-4273-8A73-6A7E7EC78151}"
         "AspNetVersion" = "8:"
         "RestartWWWService" = "11:FALSE"
