@@ -38,7 +38,7 @@ namespace WindowsAgent
 
             if (Config.HasToken() == false)
             {
-                Logger.Write("No token found; Set the HKLM\\Software\\Cesbit\\InfraSonarAgent\\Token registry key", EventLogEntryType.Error, EventId.TokenNotFound);
+                Logger.Write("No token found; Set the HKLM\\Software\\WOW6432Node\\Cesbit\\InfraSonarAgent\\Token registry key", EventLogEntryType.Error, EventId.TokenNotFound);
                 Stop();
                 return;
             }
