@@ -34,7 +34,7 @@
         }
         "Entry"
         {
-        "MsmKey" = "8:_939E78289189BE45FE3F4E1022CB5974"
+        "MsmKey" = "8:_E630BAA3300893D6A3C6A8E601B860F8"
         "OwnerKey" = "8:_5FD8335B3B894466ABFF5ADC94D32B61"
         "MsmSig" = "8:_UNDEFINED"
         }
@@ -53,7 +53,7 @@
         "Entry"
         {
         "MsmKey" = "8:_UNDEFINED"
-        "OwnerKey" = "8:_939E78289189BE45FE3F4E1022CB5974"
+        "OwnerKey" = "8:_E630BAA3300893D6A3C6A8E601B860F8"
         "MsmSig" = "8:_UNDEFINED"
         }
     }
@@ -230,14 +230,14 @@
             "IsDependency" = "11:TRUE"
             "IsolateTo" = "8:"
             }
-            "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_939E78289189BE45FE3F4E1022CB5974"
+            "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_E630BAA3300893D6A3C6A8E601B860F8"
             {
             "AssemblyRegister" = "3:1"
             "AssemblyIsInGAC" = "11:FALSE"
             "AssemblyAsmDisplayName" = "8:System.Net.Http, Version=4.2.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a"
                 "ScatterAssemblies"
                 {
-                    "_939E78289189BE45FE3F4E1022CB5974"
+                    "_E630BAA3300893D6A3C6A8E601B860F8"
                     {
                     "Name" = "8:System.Net.Http.dll"
                     "Attributes" = "3:512"
@@ -317,15 +317,15 @@
         {
         "Name" = "8:Microsoft Visual Studio"
         "ProductName" = "8:InfraSonar Windows Agent"
-        "ProductCode" = "8:{8B9CD4A4-7CF1-444F-9288-B7F8EEDDAA3C}"
-        "PackageCode" = "8:{BB3F132D-EB88-4504-8986-4D14847899CC}"
+        "ProductCode" = "8:{FFF6B32D-7AFD-40FF-8181-768781562D98}"
+        "PackageCode" = "8:{0C0B7F8C-DDAF-43D1-AA31-989D2CC7D424}"
         "UpgradeCode" = "8:{A9CF867C-F6A2-4273-8A73-6A7E7EC78151}"
         "AspNetVersion" = "8:"
         "RestartWWWService" = "11:FALSE"
         "RemovePreviousVersions" = "11:FALSE"
         "DetectNewerInstalledVersion" = "11:TRUE"
         "InstallAllUsers" = "11:FALSE"
-        "ProductVersion" = "8:1.0.6"
+        "ProductVersion" = "8:1.0.9"
         "Manufacturer" = "8:Cesbit"
         "ARPHELPTELEPHONE" = "8:"
         "ARPHELPLINK" = "8:https://infrasonar.com"
@@ -839,7 +839,7 @@
         {
             "{5259A561-127C-4D43-A0A1-72F10C7B3BF8}:_5FD8335B3B894466ABFF5ADC94D32B61"
             {
-            "SourcePath" = "8:..\\WindowsAgent\\obj\\Debug\\WindowsAgent.exe"
+            "SourcePath" = "8:..\\WindowsAgent\\obj\\Release\\WindowsAgent.exe"
             "TargetName" = "8:"
             "Tag" = "8:"
             "Folder" = "8:_95AE2010B57141A2BBECDA1911DC91F8"

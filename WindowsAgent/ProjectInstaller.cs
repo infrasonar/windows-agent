@@ -28,7 +28,7 @@ namespace WindowsAgent
 
             // Add the installers to the Installer collection.
             Installers.Add(serviceInstaller);
-            Installers.Add(serviceProcessInstaller);
+            Installers.Add(serviceProcessInstaller);            
         }
     }
 }
