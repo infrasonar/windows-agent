@@ -21,7 +21,7 @@ CheckInterval/processor | REG_DWORD | 5                          | Processor che
 CheckInterval/services  | REG_DWORD | 5                          | Services check interval in minutes.
 CheckInterval/software  | REG_DWORD | 60                         | Software check interval in minutes.
 CheckInterval/system    | REG_DWORD | 5                          | System check interval in minutes.
-CheckInterval/updates   | REG_DWORD | 5                          | Updates check interval in minutes.
+CheckInterval/updates   | REG_DWORD | 240                        | Updates check interval in minutes.
 CheckInterval/volume    | REG_DWORD | 5                          | Volume check interval in minutes.
 
 ### Development
