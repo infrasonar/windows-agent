@@ -36,7 +36,7 @@ namespace WindowsAgent.Checks
                     {
                         using (RegistryKey subkey = key.OpenSubKey(subkey_name))
                         {
-                            string name = (string)subkey.GetValue("DisplayName");
+                            string name = CheckResult.ConvertUnicodeStringToAscii((string)subkey.GetValue("DisplayName"));
                             if (name != null & !names.Contains(name))
                             {
                                 names.Add(name);
