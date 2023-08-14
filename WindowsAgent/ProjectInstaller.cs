@@ -1,4 +1,6 @@
-﻿using System.ComponentModel;
+﻿using System;
+using System.ComponentModel;
+using System.Configuration.Install;
 using System.ServiceProcess;
 
 namespace WindowsAgent
@@ -25,10 +27,28 @@ namespace WindowsAgent
             serviceInstaller.Description = "This service is used by InfraSonar for collecting monitoring data. See https://docs.infrasonar.com/collectors/agents/windows/ for more infromation.";
             serviceInstaller.StartType = ServiceStartMode.Automatic;
             serviceInstaller.DelayedAutoStart = true;
+            serviceInstaller.AfterInstall += new InstallEventHandler(StartService);
 
             // Add the installers to the Installer collection.
             Installers.Add(serviceInstaller);
-            Installers.Add(serviceProcessInstaller);            
+            Installers.Add(serviceProcessInstaller);
+        }
+
+        private void StartService(object sender, InstallEventArgs e)
+        {
+            ServiceInstaller serviceInstaller = GetServiceInstaller(sender);
+            // Start the service after it is installed.
+            if (serviceInstaller != null && serviceInstaller.StartType == ServiceStartMode.Automatic)
+            {
+                var serviceController = new ServiceController(serviceInstaller.ServiceName);
+                serviceController.Start();
+            }
+        }
+
+        private static ServiceInstaller GetServiceInstaller(object sender)
+        {
+            return sender as ServiceInstaller;
         }
     }
+
 }
