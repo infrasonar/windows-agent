@@ -25,7 +25,8 @@ namespace WindowsAgent.Checks
             {
                 ["name"] = "time",
                 ["Uptime"] = (int)(Stopwatch.GetTimestamp() / Stopwatch.Frequency),
-                ["UniversalTime"] = (int)(DateTime.Now.ToUniversalTime().Subtract(new DateTime(1970, 1, 1))).TotalSeconds
+                ["UniversalTime"] = (int)(DateTime.Now.ToUniversalTime().Subtract(new DateTime(1970, 1, 1))).TotalSeconds,
+                ["InfraSonarAgentVersion"] = InfraSonarAgent.GetVersion()
             };
 
             data.AddType("time", items);
