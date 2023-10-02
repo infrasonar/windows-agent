@@ -19,17 +19,26 @@ namespace WindowsAgent.Checks
         public override CheckResult Run()
         {
             var data = new CheckResult();
-            Item[] items = new Item[1];
 
-            items[0] = new Item
+            Item[] timeItems = new Item[1];
+            Item[] infrasonarItems = new Item[1];
+
+            timeItems[0] = new Item
             {
                 ["name"] = "time",
                 ["Uptime"] = (int)(Stopwatch.GetTimestamp() / Stopwatch.Frequency),
                 ["UniversalTime"] = (int)(DateTime.Now.ToUniversalTime().Subtract(new DateTime(1970, 1, 1))).TotalSeconds,
-                ["InfraSonarAgentVersion"] = InfraSonarAgent.GetVersion()
             };
 
-            data.AddType("time", items);
+            infrasonarItems[0] = new Item
+            {
+                ["name"] = "agent",
+                ["version"] = InfraSonarAgent.GetVersion(),
+            };
+
+            data.AddType("time", timeItems);
+            data.AddType("infrasonar", infrasonarItems);
+
             return data;
         }
     }

@@ -88,6 +88,7 @@
     <Compile Include="CheckResult.cs" />
     <Compile Include="CheckType.cs" />
     <Compile Include="Announce.cs" />
+    <Compile Include="PerfomanceInfoData.cs" />
     <Compile Include="Logger.cs" />
     <Compile Include="Config.cs" />
     <Compile Include="Counters.cs" />
