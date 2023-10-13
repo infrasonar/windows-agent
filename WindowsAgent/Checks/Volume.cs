@@ -32,10 +32,12 @@ namespace WindowsAgent.Checks
                 };
                 if (drive.IsReady)
                 {
+                    decimal percentUsed = 100 - (drive.TotalFreeSpace / (decimal)drive.TotalSize * 100);
                     item["TotalSize"] = drive.TotalSize;
                     item["DriveFormat"] = drive.DriveFormat;
                     item["TotalFreeSpace"] = drive.TotalFreeSpace;
                     item["VolumeLabel"] = drive.VolumeLabel;
+                    item["Percentused"] = percentUsed;
                 }
                 items[index++] = item;
             }
