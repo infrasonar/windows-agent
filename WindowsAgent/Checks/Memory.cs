@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Management;
 
 namespace WindowsAgent.Checks
 {
@@ -18,11 +19,37 @@ namespace WindowsAgent.Checks
         public override CheckResult Run()
         {
             var data = new CheckResult();
-            Item[] items = new Item[1];
+            Item[] memoryItems = new Item[1];
+            List<Item> pageFileItems = new List<Item>();
             PerfomanceInfoData pdata = PsApiWrapper.GetPerformanceInfo();            
             decimal percentUsed = 100 - pdata.PhysicalAvailableBytes / (decimal)pdata.PhysicalTotalBytes * 100;
+            decimal commitPercentUsed = pdata.CommitTotalPages / (decimal)pdata.CommitLimitPages * 100;
 
-            items[0] = new Item
+            using (var query = new ManagementObjectSearcher("SELECT Name, AllocatedBaseSize, CurrentUsage FROM Win32_PageFileUsage"))
+            {
+                foreach (ManagementBaseObject mp in query.Get())
+                {
+                    string name = Convert.ToString(mp.GetPropertyValue("Name"));
+                    long total = Convert.ToInt64(mp.GetPropertyValue("AllocatedBaseSize")) * 1024 * 1024;
+                    long used = Convert.ToInt64(mp.GetPropertyValue("CurrentUsage")) * 1024 * 1024;
+                    long free = total - used;
+                    decimal percentage = 0;
+                    if (total > 0) {
+                        percentage = 100 * used / (decimal)total;
+                    }
+
+                    pageFileItems.Add(new Item
+                    {
+                        ["name"] = name,
+                        ["BytesTotal"] = total,
+                        ["BytesFree"] = free,
+                        ["BytesUsed"] = used,
+                        ["PercentUsed"] = percentage,
+                    });
+                }
+            }
+
+            memoryItems[0] = new Item
             {
                 ["name"] = "memory",
                 ["PhysicalAvailableBytes"] = pdata.PhysicalAvailableBytes,
@@ -36,9 +63,12 @@ namespace WindowsAgent.Checks
                 ["KernelNonPagedBytes"] = pdata.KernelNonPagedBytes,
                 ["PageSizeBytes"] = pdata.PageSizeBytes,
                 ["PercentUsed"] = percentUsed,
+                ["CommitPercentused"] = commitPercentUsed,
             };
 
-            data.AddType("memory", items);
+            data.AddType("memory", memoryItems);
+            data.AddType("pageFile", pageFileItems.ToArray());
+
             return data;
         }
     }
