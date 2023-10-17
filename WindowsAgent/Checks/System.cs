@@ -21,7 +21,7 @@ namespace WindowsAgent.Checks
             long uptimeInSeconds = 0;
             Item[] timeItems = new Item[1];
             Item[] infrasonarItems = new Item[1];
-            
+
             using (var uptime = new PerformanceCounter("System", "System Up Time"))
             {
                 uptime.NextValue(); // Call this an extra time before reading its value

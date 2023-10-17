@@ -9,7 +9,8 @@ namespace WindowsAgent
     using Cache = Dictionary<string, Dictionary<string, PerformanceCounter>>;
     using CacheItem = Dictionary<string, PerformanceCounter>;
 
-    internal class Counters {
+    internal class Counters
+    {
 
         private static CacheItem GetCountersForItem(PerformanceCounterCategory cat, string instance, string[] counterNames)
         {

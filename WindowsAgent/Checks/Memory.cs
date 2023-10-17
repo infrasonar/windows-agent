@@ -1,12 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Management;
 
 namespace WindowsAgent.Checks
 {
     using Item = Dictionary<string, object>;
-    using Cache = Dictionary<string, Dictionary<string, PerformanceCounter>>;
 
     internal class Memory : Check
     {
@@ -21,7 +19,7 @@ namespace WindowsAgent.Checks
             var data = new CheckResult();
             Item[] memoryItems = new Item[1];
             List<Item> pageFileItems = new List<Item>();
-            PerfomanceInfoData pdata = PsApiWrapper.GetPerformanceInfo();            
+            PerfomanceInfoData pdata = PsApiWrapper.GetPerformanceInfo();
             decimal percentUsed = 100 - pdata.PhysicalAvailableBytes / (decimal)pdata.PhysicalTotalBytes * 100;
             decimal commitPercentUsed = pdata.CommitTotalPages / (decimal)pdata.CommitLimitPages * 100;
 
@@ -34,7 +32,8 @@ namespace WindowsAgent.Checks
                     long used = Convert.ToInt64(mp.GetPropertyValue("CurrentUsage")) * 1024 * 1024;
                     long free = total - used;
                     decimal percentage = 0;
-                    if (total > 0) {
+                    if (total > 0)
+                    {
                         percentage = 100 * used / (decimal)total;
                     }
 

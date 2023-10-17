@@ -23,21 +23,36 @@ namespace WindowsAgent.Checks
             ManagementObjectSearcher searcher = new ManagementObjectSearcher("root\\CIMV2", "Select * from Win32_QuickFixEngineering");
             ManagementObjectCollection updates = searcher.Get();
 
-            Item[] items = new Item[updates.Count];
+            Item[] updatesItems = new Item[updates.Count];
+            Item[] lastItems = new Item[1];
+            int lastIndex = -1;
+            long last = 0;
 
             foreach (ManagementObject mo in updates)
             {
-                items[index++] = new Item
+                long installedOn = (long)DateTime.ParseExact((string)mo["InstalledOn"], "M/d/yyyy", null).Subtract(new DateTime(1970, 1, 1)).TotalSeconds;
+                if (installedOn > last)
+                {
+                    lastIndex = index;
+                    last = installedOn;
+                }
+                updatesItems[index++] = new Item
                 {
                     ["name"] = mo["HotFixID"],
                     ["Description"] = mo["Description"],
                     ["FixComments"] = mo["FixComments"],
-                    ["InstalledOn"] = (int)DateTime.ParseExact((string)mo["InstalledOn"], "M/d/yyyy", null).Subtract(new DateTime(1970, 1, 1)).TotalSeconds,
+                    ["InstalledOn"] = installedOn,
                     ["ServicePackInEffect"] = mo["ServicePackInEffect"],
                 };
             }
 
-            data.AddType("updates", items);
+            if (lastIndex >= 0)
+            {
+                lastItems[0] = updatesItems[lastIndex];
+                data.AddType("last", lastItems);
+            }
+
+            data.AddType("updates", updatesItems);
             return data;
         }
     }

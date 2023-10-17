@@ -1,12 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Management;
 
 namespace WindowsAgent.Checks
 {
     using Item = Dictionary<string, object>;
-    using Cache = Dictionary<string, Dictionary<string, PerformanceCounter>>;
 
     internal class Users : Check
     {
@@ -33,7 +31,7 @@ namespace WindowsAgent.Checks
             Dictionary<string, long> sessionCount = new Dictionary<string, long>();
 
             using (var query = new ManagementObjectSearcher("SELECT Caption FROM Win32_Process WHERE Caption =\'winlogon.exe\'"))
-            {               
+            {
                 foreach (ManagementBaseObject mp in query.Get())
                 {
                     count += 1;
@@ -50,7 +48,8 @@ namespace WindowsAgent.Checks
                 foreach (ManagementBaseObject mp in query.Get())
                 {
                     string name = GetName(Convert.ToString(mp.GetPropertyValue("Antecedent")));
-                    if (!sessionCount.ContainsKey(name)) {
+                    if (!sessionCount.ContainsKey(name))
+                    {
                         sessionCount[name] = 0;
                     }
                     sessionCount[name] += 1;
@@ -65,7 +64,7 @@ namespace WindowsAgent.Checks
             foreach (KeyValuePair<string, long> entry in sessionCount)
             {
                 loggedOnItems.Add(new Item
-                { 
+                {
                     ["name"] = entry.Key,
                     ["SessionCount"] = entry.Value,
                 });
