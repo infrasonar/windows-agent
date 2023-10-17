@@ -21,6 +21,7 @@ namespace WindowsAgent
         private static Checks.Memory _memoryCheck = new Checks.Memory();
         private static Checks.Processor _processorCheck = new Checks.Processor();
         private static Checks.Users _usersCheck = new Checks.Users();
+        private static Checks.NtDomain _ntDomainCheck = new Checks.NtDomain();
 
         public InfraSonarAgent()
         {
@@ -89,6 +90,7 @@ namespace WindowsAgent
             _memoryCheck.Start();
             _processorCheck.Start();
             _usersCheck.Start();
+            _ntDomainCheck.Start();
         }
 
         protected override void OnStop()
