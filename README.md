@@ -15,7 +15,9 @@ Debug                   | REG_DWORD | _unset_                    | A value of `1
 LocalOnly               | REG_DWORD | _unset_                    | A value of `1` will not write to InfraSonar but instead writes output to a tmp file.
 Token                   | REG_SZ    | _required_                 | Must be a valid agent token.
 CheckInterval/memory    | REG_DWORD | 5                          | Memory check interval in minutes.
+CheckInterval/netstat   | REG_DWORD | 5                          | Netstat check interval in minutes.
 CheckInterval/network   | REG_DWORD | 5                          | Memory check interval in minutes.
+CheckInterval/ntDomain  | REG_DWORD | 5                          | NTDomain check interval in minutes.
 CheckInterval/process   | REG_DWORD | 5                          | Process check interval in minutes.
 CheckInterval/processor | REG_DWORD | 5                          | Processor check interval in minutes.
 CheckInterval/services  | REG_DWORD | 5                          | Services check interval in minutes.
@@ -25,4 +27,4 @@ CheckInterval/updates   | REG_DWORD | 240                        | Updates check
 CheckInterval/volume    | REG_DWORD | 5                          | Volume check interval in minutes.
 
 ### Development
-When updating the agent, do not forget to update the assembly and file version and also update the version of the InfraSonarAgentSetup. 
+When updating the agent, do not forget to update the assembly and file version and also update the version of the InfraSonarAgentSetup.
