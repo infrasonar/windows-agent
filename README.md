@@ -14,6 +14,7 @@ AssetName               | REG_SZ    | _unset_                    | If set, the a
 Debug                   | REG_DWORD | _unset_                    | A value of `1` will enable more informational event in the Event Viewer _(Windows Logs/Application)_.
 LocalOnly               | REG_DWORD | _unset_                    | A value of `1` will not write to InfraSonar but instead writes output to a tmp file.
 Token                   | REG_SZ    | _required_                 | Must be a valid agent token.
+CheckInterval/disk      | REG_DWORD | 5                          | Disk check interval in minutes.
 CheckInterval/memory    | REG_DWORD | 5                          | Memory check interval in minutes.
 CheckInterval/netstat   | REG_DWORD | 5                          | Netstat check interval in minutes.
 CheckInterval/network   | REG_DWORD | 5                          | Memory check interval in minutes.
