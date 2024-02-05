@@ -1,5 +1,7 @@
 ﻿using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
+using System.Management;
 
 
 namespace WindowsAgent.Checks
@@ -9,7 +11,7 @@ namespace WindowsAgent.Checks
     internal class Volume : Check
     {
         private const int _defaultInterval = 5;  // Interval in minutes, can be overwritten with REG key.
-        private const string _key = "volume";  // Check key.        
+        private const string _key = "volume";  // Check key.
 
         public override string Key() { return _key; }
         public override int DefaultInterval() { return _defaultInterval; }
@@ -43,6 +45,33 @@ namespace WindowsAgent.Checks
             }
 
             data.AddType("volume", items);
+
+            ManagementObjectSearcher searcher = new ManagementObjectSearcher("SELECT Volume, AllocatedSpace, MaxSpace, UsedSpace FROM Win32_ShadowStorage");
+            try
+            {
+                ManagementObjectCollection result = searcher.Get();
+                index = 0;
+                Item[] shadowVolumes = new Item[result.Count];
+                foreach (ManagementBaseObject mo in result)
+                {
+                    shadowVolumes[index++] = new Item
+                    {
+                        ["name"] = mo["Volume"],  // TODO ref?
+                        ["MaxSpace"] = mo["MaxSpace"],
+                        ["AllocatedSpace"] = mo["AllocatedSpace"],
+                        ["UsedSpace"] = mo["UsedSpace"],
+                    };
+                }
+                data.AddType("shadow", shadowVolumes.ToArray());
+            }
+            catch (Exception ex)
+            {
+                if (Config.IsDebug())
+                {
+                    Logger.Write(string.Format("Failed retrieve shadow volume(s); {0}", ex.Message), EventLogEntryType.Warning, EventId.None);
+                }
+            }
+
             return data;
         }
     }
