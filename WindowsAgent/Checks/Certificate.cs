@@ -65,15 +65,15 @@ namespace WindowsAgent.Checks
                             {
                                 item["Country"] = e[1];
                             }
-                            if (e[0] == "CN")
+                            else if (e[0] == "CN")
                             {
                                 item["CommonName"] = e[1];
                             }
-                            if (e[0] == "O")
+                            else if (e[0] == "O")
                             {
                                 item["Organization"] = e[1];
                             }
-                            if (e[0] == "OU")
+                            else if (e[0] == "OU")
                             {
                                 item["OrganizationalUnit"] = e[1];
                             }
