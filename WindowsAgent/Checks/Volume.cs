@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Management;
@@ -62,7 +63,7 @@ namespace WindowsAgent.Checks
                         ["UsedSpace"] = mo["UsedSpace"],
                     };
                 }
-                data.AddType("shadow", shadowVolumes.ToArray());
+                data.AddType("shadow", shadowVolumes);
             }
             catch (Exception ex)
             {

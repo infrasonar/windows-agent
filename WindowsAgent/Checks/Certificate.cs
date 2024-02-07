@@ -1,12 +1,12 @@
-using System.IO;
 using System.Diagnostics;
 using System.Security.Cryptography;
 using System.Security.Cryptography.X509Certificates;
+using System.Collections.Generic;
+using System;
 
 namespace WindowsAgent.Checks
 {
     using Item = Dictionary<string, object>;
-    using Items = Dictionary<string, Dictionary<string, object>>;
 
     internal class Certificate : Check
     {
@@ -58,9 +58,9 @@ namespace WindowsAgent.Checks
                             ["FriendlyName"] = certificate.FriendlyName,
                         };
 
-                        foreach (string d in certificate.Issuer.Split(","))
+                        foreach (string d in certificate.Issuer.Split(','))
                         {
-                            string[] e = d.Trim().Split("=");
+                            string[] e = d.Trim().Split('=');
                             if (e[0] == "C")
                             {
                                 item["Country"] = e[1];
