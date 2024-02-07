@@ -6,6 +6,7 @@ using System.Security.Cryptography.X509Certificates;
 namespace WindowsAgent.Checks
 {
     using Item = Dictionary<string, object>;
+    using Items = Dictionary<string, Dictionary<string, object>>;
 
     internal class Certificate : Check
     {
@@ -19,7 +20,7 @@ namespace WindowsAgent.Checks
         public override CheckResult Run()
         {
             var data = new CheckResult();
-            List<Item> items = new List<Item>();
+            Items items = new Items();
 
             foreach (StoreLocation storeLocation in (StoreLocation[]) Enum.GetValues(typeof(StoreLocation)))
             {
@@ -41,43 +42,76 @@ namespace WindowsAgent.Checks
 
                     foreach (X509Certificate2 certificate in store.Certificates)
                     {
+                        Item item = new Item
+                        {
+                            ["name"] = certificate.Thumbprint,
+                            ["Issuer"] = certificate.Issuer,
+                            ["Subject"] = certificate.Subject,
+                            ["Version"] = certificate.Version,
+                            ["IsValid"] = certificate.Verify(),
+                            ["NotAfter"] = (int) certificate.NotAfter.Subtract(new DateTime(1970, 1, 1)).TotalSeconds,
+                            ["NotBefore"] = (int) certificate.NotBefore.Subtract(new DateTime(1970, 1, 1)).TotalSeconds,
+                            ["ExpiresIn"] = (int) DateTime.Now.Subtract(certificate.NotAfter).TotalSeconds,
+                            ["SignatureAlgorithm"] = certificate.SignatureAlgorithm,
+                            ["PublicKeyType"] = certificate.PublicKey.Oid.FriendlyName,
+                            ["PublicKeyLength"] = certificate.PublicKey.EncodedKeyValue.RawData.Length,
+                            ["FriendlyName"] = certificate.FriendlyName,
+                        };
+
+                        foreach (string d in certificate.Issuer.Split(","))
+                        {
+                            string[] e = d.Trim().Split("=");
+                            if (e[0] == "C")
+                            {
+                                item["Country"] = e[1];
+                            }
+                            if (e[0] == "CN")
+                            {
+                                item["CommonName"] = e[1];
+                            }
+                            if (e[0] == "O")
+                            {
+                                item["Organisation"] = e[1];
+                            }
+                            if (e[0] == "OU")
+                            {
+                                item["OrganizationalUnit"] = e[1];
+                            }
+                        }
+
+                        items[certificate.Thumbprint] = item;
+                    }
+
+                    foreach (X509Certificate2 certificate in store.Certificates)
+                    {
                         X509Chain ch = new X509Chain();
                         ch.ChainPolicy.RevocationMode = X509RevocationMode.Online;
                         ch.Build(certificate);
 
-                        Item item = new Item
-                        {
-                            ["name"] = certificate.FriendlyName,  // TODO
-                            ["issuer"] = certificate.Issuer,
-                            ["subject"] = certificate.Subject,
-                            ["signatureAlgorithm"] = certificate.SignatureAlgorithm.FriendlyName,
-                            ["version"] = certificate.Version,
-                            ["isValid"] = certificate.Verify(),
-                            ["validNotAfter"] = (int) certificate.NotAfter.Subtract(new DateTime(1970, 1, 1)).TotalSeconds,
-                            ["validNotBefore"] = (int) certificate.NotBefore.Subtract(new DateTime(1970, 1, 1)).TotalSeconds,
-                            ["expiresIn"] = (int) DateTime.Now.Subtract(certificate.NotAfter).TotalSeconds,
-                            ["publicKeyType"] = certificate.PublicKey.Oid.FriendlyName,
-                            ["publicKeyLength"] = certificate.PublicKey.EncodedKeyValue.RawData.Length,
-                            ["thumbPrint"] = certificate.Thumbprint,
-                            ["chainRevocationFlag"] = ch.ChainPolicy.RevocationFlag,
-                            ["chainRevocationMode"] = ch.ChainPolicy.RevocationMode,
-                            ["chainVerificationFlags"] = ch.ChainPolicy.VerificationFlags,
-                            ["chainVerificationTime"] = ch.ChainPolicy.VerificationTime,
-                            ["chainStatusLength"] = ch.ChainStatus.Length,
-                            ["chainApplicationPolicyCount"] = ch.ChainPolicy.ApplicationPolicy.Count,
-                            ["chainCertificatePolicyCount"] = ch.ChainPolicy.CertificatePolicy.Count,
-                            ["chainElements"] = ch.ChainElements.Select(e => e.Certificate.Verify()),
-                            ["chainElementsIsSynchronized"] = ch.ChainElements.IsSynchronized,
-                        };
+                        Item item = items[certificate.Thumbprint];
+                        item["ChainRevocationFlag"] = ch.ChainPolicy.RevocationFlag;
+                        item["ChainRevocationMode"] = ch.ChainPolicy.RevocationMode;
+                        item["ChainVerificationFlags"] = ch.ChainPolicy.VerificationFlags;
+                        item["ChainVerificationTime"] = ch.ChainPolicy.VerificationTime;
+                        item["ChainStatusLength"] = ch.ChainStatus.Length;
+                        item["ChainApplicationPolicyCount"] = ch.ChainPolicy.ApplicationPolicy.Count;
+                        item["ChainCertificatePolicyCount"] = ch.ChainPolicy.CertificatePolicy.Count;
+                        item["ChainElementsIsSynchronized"] = ch.ChainElements.IsSynchronized;
 
-                        items.Add(item);
+                        for (int i=1; i < ch.ChainElements.Count; i++)
+                        {
+                            if (items.ContainsKey(ch.ChainElements[i].Certificate.Thumbprint))
+                            {
+                                items[ch.ChainElements[i].Certificate.Thumbprint]["parent"] = ch.ChainElements[i-1].Certificate.Thumbprint;
+                            }
+                        }
                     }
 
                     store.Close();
                 }
             }
 
-            data.AddType("certificate", items.ToArray());
+            data.AddType("certificate", items.Values.ToArray());
 
             return data;
         }
