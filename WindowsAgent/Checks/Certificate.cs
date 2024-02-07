@@ -71,7 +71,7 @@ namespace WindowsAgent.Checks
                             }
                             if (e[0] == "O")
                             {
-                                item["Organisation"] = e[1];
+                                item["Organization"] = e[1];
                             }
                             if (e[0] == "OU")
                             {
