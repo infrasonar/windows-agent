@@ -86,14 +86,14 @@ namespace WindowsAgent.Checks
                         item["ChainRevocationFlag"] = ch.ChainPolicy.RevocationFlag;
                         item["ChainRevocationMode"] = ch.ChainPolicy.RevocationMode;
                         item["ChainVerificationFlags"] = ch.ChainPolicy.VerificationFlags;
-                        item["ChainVerificationTime"] = ch.ChainPolicy.VerificationTime;
+                        item["ChainVerificationTime"] = (int) ch.ChainPolicy.VerificationTime.Subtract(new DateTime(1970, 1, 1)).TotalSeconds;
                         item["ChainStatusLength"] = ch.ChainStatus.Length;
                         item["ChainApplicationPolicyCount"] = ch.ChainPolicy.ApplicationPolicy.Count;
                         item["ChainCertificatePolicyCount"] = ch.ChainPolicy.CertificatePolicy.Count;
                         item["ChainElementsIsSynchronized"] = ch.ChainElements.IsSynchronized;
                         if (ch.ChainElements.Count > 1)
                         {
-                            item["parent"] = ch.ChainElements[1].Certificate.Thumbprint;
+                            item["Parent"] = ch.ChainElements[1].Certificate.Thumbprint;
                         }
 
                         items.Add(item);
