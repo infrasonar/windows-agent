@@ -20,7 +20,7 @@ namespace WindowsAgent.Checks
         public override CheckResult Run()
         {
             var data = new CheckResult();
-            Items items = new Items();
+            List<Item> items = new List<Item>();
 
             foreach (StoreLocation storeLocation in (StoreLocation[]) Enum.GetValues(typeof(StoreLocation)))
             {
@@ -30,7 +30,7 @@ namespace WindowsAgent.Checks
 
                     try
                     {
-                        store.Open(OpenFlags.OpenExistingOnly);
+                        store.Open(OpenFlags.OpenExistingOnly | OpenFlags.ReadOnly);
                     }
                     catch (CryptographicException)
                     {
@@ -79,16 +79,10 @@ namespace WindowsAgent.Checks
                             }
                         }
 
-                        items[certificate.Thumbprint] = item;
-                    }
-
-                    foreach (X509Certificate2 certificate in store.Certificates)
-                    {
                         X509Chain ch = new X509Chain();
                         ch.ChainPolicy.RevocationMode = X509RevocationMode.Online;
                         ch.Build(certificate);
 
-                        Item item = items[certificate.Thumbprint];
                         item["ChainRevocationFlag"] = ch.ChainPolicy.RevocationFlag;
                         item["ChainRevocationMode"] = ch.ChainPolicy.RevocationMode;
                         item["ChainVerificationFlags"] = ch.ChainPolicy.VerificationFlags;
@@ -97,21 +91,18 @@ namespace WindowsAgent.Checks
                         item["ChainApplicationPolicyCount"] = ch.ChainPolicy.ApplicationPolicy.Count;
                         item["ChainCertificatePolicyCount"] = ch.ChainPolicy.CertificatePolicy.Count;
                         item["ChainElementsIsSynchronized"] = ch.ChainElements.IsSynchronized;
-
-                        for (int i=1; i < ch.ChainElements.Count; i++)
+                        if (ch.ChainElements.Count > 1)
                         {
-                            if (items.ContainsKey(ch.ChainElements[i].Certificate.Thumbprint))
-                            {
-                                items[ch.ChainElements[i].Certificate.Thumbprint]["parent"] = ch.ChainElements[i-1].Certificate.Thumbprint;
-                            }
+                            item["parent"] = ch.ChainElements[1].Certificate.Thumbprint;
                         }
-                    }
 
+                        items.Add(item);
+                    }
                     store.Close();
                 }
             }
 
-            data.AddType("certificate", items.Values.ToArray());
+            data.AddType("certificate", items.ToArray());
 
             return data;
         }
