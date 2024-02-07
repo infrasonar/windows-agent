@@ -46,7 +46,7 @@ namespace WindowsAgent
                         if (Config.IsDebug())
                         {
                             string e = string.Format("Failed to retrieve initial counter values for {0} : {1}", categoryName, instance);
-                            Logger.Write(e, EventLogEntryType.Warning, EventId.InitRegistry);
+                            Logger.Write(e, EventLogEntryType.Warning, EventId.None);
                         }
                     }
                 }

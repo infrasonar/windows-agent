@@ -76,6 +76,9 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Check.cs" />
+    <Compile Include="Checks\Netstat.cs" />
+    <Compile Include="Checks\Certificate.cs" />
+    <Compile Include="Checks\Disk.cs" />
     <Compile Include="Checks\NtDomain.cs" />
     <Compile Include="Checks\Users.cs" />
     <Compile Include="Checks\Processor.cs" />

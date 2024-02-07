@@ -66,7 +66,7 @@ namespace WindowsAgent.Checks
                             if (Config.IsDebug())
                             {
                                 string e = string.Format("Failed to retrieve counter value ({0}-{1})", instance.Key, counter.Key);
-                                Logger.Write(e, EventLogEntryType.Warning, EventId.InitRegistry);
+                                Logger.Write(e, EventLogEntryType.Warning, EventId.None);
                             }
                             hasError = true;
                             break;

@@ -22,6 +22,9 @@ namespace WindowsAgent
         private static Checks.Processor _processorCheck = new Checks.Processor();
         private static Checks.Users _usersCheck = new Checks.Users();
         private static Checks.NtDomain _ntDomainCheck = new Checks.NtDomain();
+        private static Checks.Netstat _netstatCheck = new Checks.Netstat();
+        private static Checks.Disk _diskCheck = new Checks.Disk();
+        private static Checks.Certificate _certificateCheck = new Checks.Certificate();
 
         public InfraSonarAgent()
         {
@@ -91,6 +94,9 @@ namespace WindowsAgent
             _processorCheck.Start();
             _usersCheck.Start();
             _ntDomainCheck.Start();
+            _netstatCheck.Start();
+            _diskCheck.Start();
+            _certificateCheck.Start();
         }
 
         protected override void OnStop()
