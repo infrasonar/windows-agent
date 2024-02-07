@@ -62,7 +62,7 @@ namespace WindowsAgent.Checks
 
                     shadowVolumes[index++] = new Item
                     {
-                        ["name"] = moVolume["Name"].ToLower(),
+                        ["name"] = Convert.ToString(moVolume.GetPropertyValue("Name")).ToLower(),
                         ["MaxSpace"] = mo["MaxSpace"],
                         ["AllocatedSpace"] = mo["AllocatedSpace"],
                         ["UsedSpace"] = mo["UsedSpace"],
