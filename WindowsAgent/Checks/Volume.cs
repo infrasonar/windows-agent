@@ -55,9 +55,14 @@ namespace WindowsAgent.Checks
                 Item[] shadowVolumes = new Item[result.Count];
                 foreach (ManagementBaseObject mo in result)
                 {
+                    ManagementObject moVolume = new ManagementObject();
+                    ManagementPath moVolumePath = new ManagementPath((String) mo["Volume"]);
+                    moVolume.Path = moVolumePath;
+                    moVolume.Get();
+
                     shadowVolumes[index++] = new Item
                     {
-                        ["name"] = mo["Volume"],  // TODO ref?
+                        ["name"] = moVolume["Name"].ToLower(),
                         ["MaxSpace"] = mo["MaxSpace"],
                         ["AllocatedSpace"] = mo["AllocatedSpace"],
                         ["UsedSpace"] = mo["UsedSpace"],
