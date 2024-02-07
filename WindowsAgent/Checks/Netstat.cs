@@ -24,7 +24,7 @@ namespace WindowsAgent.Checks
                 Process p = Process.GetProcessById(processId);
                 return p.ProcessName;
             }
-            catch (Exception e)
+            catch (Exception)
             {
                 return null;
             }
