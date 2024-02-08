@@ -46,8 +46,8 @@ namespace WindowsAgent.Checks
                     items.Add(new Item
                     {
                         ["name"] = instance.Key,
-                        ["DiskReadsPersec"] = instance.Value["Disk Reads/sec"].NextValue(),
-                        ["DiskWritesPersec"] = instance.Value["Disk Writes/sec"].NextValue(),
+                        ["DiskReadsPersec"] = Convert.ToDecimal(instance.Value["Disk Reads/sec"].NextValue()),
+                        ["DiskWritesPersec"] = Convert.ToDecimal(instance.Value["Disk Writes/sec"].NextValue()),
                     });
                 }
             }
@@ -63,14 +63,14 @@ namespace WindowsAgent.Checks
                     itemsPhysical.Add(new Item
                     {
                         ["name"] = instance.Key,
-                        ["AvgDiskReadQueueLength"] = instance.Value["Avg. Disk Read Queue Length"].NextValue(),
-                        ["AvgDiskWriteQueueLength"] = instance.Value["Avg. Disk Write Queue Length"].NextValue(),
-                        ["DiskReadBytesPersec"] = instance.Value["Disk Read Bytes/sec"].NextValue(),
-                        ["DiskReadsPersec"] = instance.Value["Disk Reads/sec"].NextValue(),
-                        ["DiskWriteBytesPersec"] = instance.Value["Disk Write Bytes/sec"].NextValue(),
-                        ["DiskWritesPersec"] = instance.Value["Disk Writes/sec"].NextValue(),
-                        ["PercentDiskReadTime"] = instance.Value["% Disk Read Time"].NextValue(),
-                        ["PercentDiskWriteTime"] = instance.Value["% Disk Write Time"].NextValue(),
+                        ["AvgDiskReadQueueLength"] = Convert.ToDecimal(instance.Value["Avg. Disk Read Queue Length"].NextValue()),
+                        ["AvgDiskWriteQueueLength"] = Convert.ToDecimal(instance.Value["Avg. Disk Write Queue Length"].NextValue()),
+                        ["DiskReadBytesPersec"] = Convert.ToDecimal(instance.Value["Disk Read Bytes/sec"].NextValue()),
+                        ["DiskReadsPersec"] = Convert.ToDecimal(instance.Value["Disk Reads/sec"].NextValue()),
+                        ["DiskWriteBytesPersec"] = Convert.ToDecimal(instance.Value["Disk Write Bytes/sec"].NextValue()),
+                        ["DiskWritesPersec"] = Convert.ToDecimal(instance.Value["Disk Writes/sec"].NextValue()),
+                        ["PercentDiskReadTime"] = Convert.ToDecimal(instance.Value["% Disk Read Time"].NextValue()),
+                        ["PercentDiskWriteTime"] = Convert.ToDecimal(instance.Value["% Disk Write Time"].NextValue()),
                     });
                 }
             }

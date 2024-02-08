@@ -52,7 +52,7 @@ namespace WindowsAgent.Checks
                             ["NotAfter"] = (int) certificate.NotAfter.Subtract(new DateTime(1970, 1, 1)).TotalSeconds,
                             ["NotBefore"] = (int) certificate.NotBefore.Subtract(new DateTime(1970, 1, 1)).TotalSeconds,
                             ["ExpiresIn"] = (int) DateTime.Now.Subtract(certificate.NotAfter).TotalSeconds,
-                            ["SignatureAlgorithm"] = certificate.SignatureAlgorithm,
+                            ["SignatureAlgorithm"] = certificate.SignatureAlgorithm.FriendlyName,
                             ["PublicKeyType"] = certificate.PublicKey.Oid.FriendlyName,
                             ["PublicKeyLength"] = certificate.PublicKey.EncodedKeyValue.RawData.Length,
                             ["FriendlyName"] = certificate.FriendlyName,
