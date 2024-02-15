@@ -63,8 +63,8 @@ namespace WindowsAgent.Checks
             foreach (ManagementObject mo in connections)
             {
 
-                int pid = Convert.ToUInt32(mo["OwningProcess"]);
-                int state = Convert.ToUInt8(mo["State"]);
+                int pid = Convert.ToInt32(mo["OwningProcess"]);
+                int state = Convert.ToInt32(mo["State"]);
                 int creationTime = (int)DateTime.ParseExact(Convert.ToString(mo["CreationTime"]).Substring(0, 14), "yyyyMMddHHmmss", null).Subtract(new DateTime(1970, 1, 1)).TotalSeconds;
 
                 items[index++] = new Item
