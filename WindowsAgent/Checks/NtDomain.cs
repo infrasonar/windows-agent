@@ -9,7 +9,7 @@ namespace WindowsAgent.Checks
     internal class NtDomain : Check
     {
         private const int _defaultInterval = 5;  // Interval in minutes, can be overwritten with REG key.
-        private const string _key = "ntDomain";  // Check key.        
+        private const string _key = "ntDomain";  // Check key.
         public override string Key() { return _key; }
         public override int DefaultInterval() { return _defaultInterval; }
         public override bool CanRun() { return true; }
@@ -60,10 +60,10 @@ namespace WindowsAgent.Checks
                         ["AllowMaximum"] = Convert.ToBoolean(mp.GetPropertyValue("AllowMaximum")),
                         ["Caption"] = Convert.ToString(mp.GetPropertyValue("Caption")),
                         ["Description"] = Convert.ToString(mp.GetPropertyValue("Description")),
-                        ["MaximumAllowed"] = Convert.ToInt64(mp.GetPropertyValue("MaximumAllowed")),
+                        ["MaximumAllowed"] = Convert.ToUInt32(mp.GetPropertyValue("MaximumAllowed")),
                         ["Path"] = Convert.ToString(mp.GetPropertyValue("Path")),
                         ["Status"] = Convert.ToString(mp.GetPropertyValue("Status")),
-                        ["Type"] = GetShareType(Convert.ToInt64(mp.GetPropertyValue("Type"))),
+                        ["Type"] = GetShareType(Convert.ToUInt32(mp.GetPropertyValue("Type"))),
                     });
                 }
             }

@@ -63,8 +63,8 @@ namespace WindowsAgent.Checks
             foreach (ManagementObject mo in connections)
             {
 
-                int pid = Convert.ToInt32(mo["OwningProcess"]);
-                int state = Convert.ToInt32(mo["State"]);
+                int pid = Convert.ToUInt32(mo["OwningProcess"]);
+                int state = Convert.ToUInt8(mo["State"]);
                 int creationTime = (int)DateTime.ParseExact(Convert.ToString(mo["CreationTime"]).Substring(0, 14), "yyyyMMddHHmmss", null).Subtract(new DateTime(1970, 1, 1)).TotalSeconds;
 
                 items[index++] = new Item
@@ -72,9 +72,9 @@ namespace WindowsAgent.Checks
                     ["name"] = mo["InstanceID"],
                     ["CreationTime"] = creationTime,
                     ["LocalAddress"] = mo["LocalAddress"],
-                    ["LocalPort"] = Convert.ToInt32(mo["LocalPort"]),
+                    ["LocalPort"] = Convert.ToUInt16(mo["LocalPort"]),
                     ["RemoteAddress"] = mo["RemoteAddress"],
-                    ["RemotePort"] = Convert.ToInt32(mo["RemotePort"]),
+                    ["RemotePort"] = Convert.ToUInt16(mo["RemotePort"]),
                     ["OwningProcessID"] = pid,
                     ["OwningProcess"] = GetProcessName(pid),
                     ["State"] = GetStateType(state),

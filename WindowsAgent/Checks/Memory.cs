@@ -9,7 +9,7 @@ namespace WindowsAgent.Checks
     internal class Memory : Check
     {
         private const int _defaultInterval = 5;  // Interval in minutes, can be overwritten with REG key.
-        private const string _key = "memory";  // Check key.        
+        private const string _key = "memory";  // Check key.
         public override string Key() { return _key; }
         public override int DefaultInterval() { return _defaultInterval; }
         public override bool CanRun() { return true; }
@@ -28,8 +28,8 @@ namespace WindowsAgent.Checks
                 foreach (ManagementBaseObject mp in query.Get())
                 {
                     string name = Convert.ToString(mp.GetPropertyValue("Name"));
-                    long total = Convert.ToInt64(mp.GetPropertyValue("AllocatedBaseSize")) * 1024 * 1024;
-                    long used = Convert.ToInt64(mp.GetPropertyValue("CurrentUsage")) * 1024 * 1024;
+                    long total = Convert.ToUInt32(mp.GetPropertyValue("AllocatedBaseSize")) * 1024 * 1024;
+                    long used = Convert.ToUInt32(mp.GetPropertyValue("CurrentUsage")) * 1024 * 1024;
                     long free = total - used;
                     decimal percentage = 0;
                     if (total > 0)

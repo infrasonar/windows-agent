@@ -10,7 +10,7 @@ namespace WindowsAgent.Checks
     internal class Services : Check
     {
         private const int _defaultInterval = 5;  // Interval in minutes, can be overwritten with REG key.
-        private const string _key = "services";  // Check key.        
+        private const string _key = "services";  // Check key.
 
         public override string Key() { return _key; }
         public override int DefaultInterval() { return _defaultInterval; }
@@ -33,9 +33,9 @@ namespace WindowsAgent.Checks
                     ["name"] = service.ServiceName,
                     ["DesktopInteract"] = Convert.ToBoolean(mo["DesktopInteract"]),
                     ["DisplayName"] = Convert.ToString(mo["DisplayName"]),
-                    ["ExitCode"] = Convert.ToInt32(mo["ExitCode"]),
+                    ["ExitCode"] = Convert.ToUInt32(mo["ExitCode"]),
                     ["PathName"] = Convert.ToString(mo["PathName"]),
-                    ["ServiceSpecificExitCode"] = Convert.ToInt32(mo["ServiceSpecificExitCode"]),
+                    ["ServiceSpecificExitCode"] = Convert.ToUInt32(mo["ServiceSpecificExitCode"]),
                     ["ServiceType"] = Convert.ToString(mo["ServiceType"]),
                     ["Started"] = Convert.ToBoolean(mo["Started"]),
                     ["StartMode"] = Convert.ToString(mo["StartMode"]),
