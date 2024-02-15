@@ -56,7 +56,7 @@ namespace WindowsAgent.Checks
                 foreach (ManagementBaseObject mo in result)
                 {
                     ManagementObject moVolume = new ManagementObject();
-                    ManagementPath moVolumePath = new ManagementPath((String) mo["Volume"]);
+                    ManagementPath moVolumePath = new ManagementPath((string) mo["Volume"]);
                     moVolume.Path = moVolumePath;
                     moVolume.Get();
 
