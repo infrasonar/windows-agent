@@ -18,6 +18,7 @@ namespace WindowsAgent
         CheckError = 2013,
         CreateAsset = 2016,
         AnnounceAsset = 2017,
+        InitializationFailureShadowVolume = 2018,
     }
 
     internal class Logger

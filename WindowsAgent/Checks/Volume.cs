@@ -13,6 +13,7 @@ namespace WindowsAgent.Checks
     {
         private const int _defaultInterval = 5;  // Interval in minutes, can be overwritten with REG key.
         private const string _key = "volume";  // Check key.
+        private bool _includeShadowVolume  = true;
 
         public override string Key() { return _key; }
         public override int DefaultInterval() { return _defaultInterval; }
@@ -46,38 +47,41 @@ namespace WindowsAgent.Checks
             }
 
             data.AddType("volume", items);
-
-            ManagementObjectSearcher searcher = new ManagementObjectSearcher("SELECT Volume, AllocatedSpace, MaxSpace, UsedSpace FROM Win32_ShadowStorage");
-            try
+            if (_includeShadowVolume)
             {
-                ManagementObjectCollection result = searcher.Get();
-                index = 0;
-                Item[] shadowVolumes = new Item[result.Count];
-                foreach (ManagementBaseObject mo in result)
+                ManagementObjectSearcher searcher = new ManagementObjectSearcher("SELECT Volume, AllocatedSpace, MaxSpace, UsedSpace FROM Win32_ShadowStorage");
+                try
                 {
-                    ManagementObject moVolume = new ManagementObject();
-                    ManagementPath moVolumePath = new ManagementPath((string) mo["Volume"]);
-                    moVolume.Path = moVolumePath;
-                    moVolume.Get();
-
-                    shadowVolumes[index++] = new Item
+                    ManagementObjectCollection result = searcher.Get();
+                    index = 0;
+                    Item[] shadowVolumes = new Item[result.Count];
+                    foreach (ManagementBaseObject mo in result)
                     {
-                        ["name"] = Convert.ToString(moVolume.GetPropertyValue("Name")).ToLower(),
-                        ["MaxSpace"] = Convert.ToUInt64(mo["MaxSpace"]),
-                        ["AllocatedSpace"] = Convert.ToUInt64(mo["AllocatedSpace"]),
-                        ["UsedSpace"] = Convert.ToUInt64(mo["UsedSpace"]),
-                    };
+                        ManagementObject moVolume = new ManagementObject();
+                        ManagementPath moVolumePath = new ManagementPath((string)mo["Volume"]);
+                        moVolume.Path = moVolumePath;
+                        moVolume.Get();
+
+                        shadowVolumes[index++] = new Item
+                        {
+                            ["name"] = Convert.ToString(moVolume.GetPropertyValue("Name")).ToLower(),
+                            ["MaxSpace"] = Convert.ToUInt64(mo["MaxSpace"]),
+                            ["AllocatedSpace"] = Convert.ToUInt64(mo["AllocatedSpace"]),
+                            ["UsedSpace"] = Convert.ToUInt64(mo["UsedSpace"]),
+                        };
+                    }
+                    data.AddType("shadow", shadowVolumes);
                 }
-                data.AddType("shadow", shadowVolumes);
-            }
-            catch (Exception ex)
-            {
-                if (Config.IsDebug())
+                catch (ManagementException ex)
+                {
+                    _includeShadowVolume = false;
+                    Logger.Write(string.Format("Failed retrieve shadow volume(s); {0}; No longer check for shadow volumes until a restart", ex.Message), EventLogEntryType.Warning, EventId.InitializationFailureShadowVolume);
+                }
+                catch (Exception ex)
                 {
                     Logger.Write(string.Format("Failed retrieve shadow volume(s); {0}", ex.Message), EventLogEntryType.Warning, EventId.None);
                 }
             }
-
             return data;
         }
     }
