@@ -13,7 +13,7 @@ namespace WindowsAgent.Checks
     {
         private const int _defaultInterval = 5;  // Interval in minutes, can be overwritten with REG key.
         private const string _key = "volume";  // Check key.
-        private bool _includeShadowVolume  = true;
+        private bool _includeShadowVolume  = false;  // Do not include Shadow Volume type as this does not yet work as expected
 
         public override string Key() { return _key; }
         public override int DefaultInterval() { return _defaultInterval; }

@@ -317,15 +317,15 @@
         {
         "Name" = "8:Microsoft Visual Studio"
         "ProductName" = "8:InfraSonar Windows Agent"
-        "ProductCode" = "8:{46638C04-BC5E-485A-8E06-4A3349A44D6E}"
-        "PackageCode" = "8:{3A5855FD-577C-4017-84AE-3832C5FFFBD2}"
+        "ProductCode" = "8:{DF9BA1DE-CE4B-438A-B827-FEAD8ADB52FB}"
+        "PackageCode" = "8:{6AF83B71-16C0-4CE4-B779-149718501123}"
         "UpgradeCode" = "8:{A9CF867C-F6A2-4273-8A73-6A7E7EC78151}"
         "AspNetVersion" = "8:"
         "RestartWWWService" = "11:FALSE"
         "RemovePreviousVersions" = "11:FALSE"
         "DetectNewerInstalledVersion" = "11:TRUE"
         "InstallAllUsers" = "11:FALSE"
-        "ProductVersion" = "8:1.0.14"
+        "ProductVersion" = "8:1.0.15"
         "Manufacturer" = "8:Cesbit"
         "ARPHELPTELEPHONE" = "8:"
         "ARPHELPLINK" = "8:https://infrasonar.com"
@@ -839,7 +839,7 @@
         {
             "{5259A561-127C-4D43-A0A1-72F10C7B3BF8}:_5FD8335B3B894466ABFF5ADC94D32B61"
             {
-            "SourcePath" = "8:"
+            "SourcePath" = "8:..\\WindowsAgent\\obj\\Debug\\WindowsAgent.exe"
             "TargetName" = "8:"
             "Tag" = "8:"
             "Folder" = "8:_95AE2010B57141A2BBECDA1911DC91F8"
