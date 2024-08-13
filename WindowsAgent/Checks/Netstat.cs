@@ -65,7 +65,7 @@ namespace WindowsAgent.Checks
 
                 int pid = Convert.ToInt32(mo["OwningProcess"]);
                 int state = Convert.ToInt32(mo["State"]);
-                int creationTime = (int)DateTime.ParseExact(Convert.ToString(mo["CreationTime"]).Substring(0, 14), "yyyyMMddHHmmss", null).Subtract(new DateTime(1970, 1, 1)).TotalSeconds;
+                long creationTime = (long)DateTime.ParseExact(Convert.ToString(mo["CreationTime"]).Substring(0, 14), "yyyyMMddHHmmss", null).Subtract(new DateTime(1970, 1, 1)).TotalSeconds;
 
                 items[index++] = new Item
                 {

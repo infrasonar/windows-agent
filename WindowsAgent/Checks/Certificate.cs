@@ -49,9 +49,9 @@ namespace WindowsAgent.Checks
                             ["Subject"] = certificate.Subject,
                             ["Version"] = certificate.Version,
                             ["IsValid"] = certificate.Verify(),
-                            ["NotAfter"] = (int) certificate.NotAfter.Subtract(new DateTime(1970, 1, 1)).TotalSeconds,
-                            ["NotBefore"] = (int) certificate.NotBefore.Subtract(new DateTime(1970, 1, 1)).TotalSeconds,
-                            ["ExpiresIn"] = (int) DateTime.Now.Subtract(certificate.NotAfter).TotalSeconds,
+                            ["NotAfter"] = (long) certificate.NotAfter.Subtract(new DateTime(1970, 1, 1)).TotalSeconds,
+                            ["NotBefore"] = (long) certificate.NotBefore.Subtract(new DateTime(1970, 1, 1)).TotalSeconds,
+                            ["ExpiresIn"] = (long) DateTime.Now.Subtract(certificate.NotAfter).TotalSeconds,
                             ["SignatureAlgorithm"] = certificate.SignatureAlgorithm.FriendlyName,
                             ["PublicKeyType"] = certificate.PublicKey.Oid.FriendlyName,
                             ["PublicKeyLength"] = certificate.PublicKey.EncodedKeyValue.RawData.Length,
@@ -86,7 +86,7 @@ namespace WindowsAgent.Checks
                         item["ChainRevocationFlag"] = ch.ChainPolicy.RevocationFlag;
                         item["ChainRevocationMode"] = ch.ChainPolicy.RevocationMode;
                         item["ChainVerificationFlags"] = ch.ChainPolicy.VerificationFlags;
-                        item["ChainVerificationTime"] = (int) ch.ChainPolicy.VerificationTime.Subtract(new DateTime(1970, 1, 1)).TotalSeconds;
+                        item["ChainVerificationTime"] = (long) ch.ChainPolicy.VerificationTime.Subtract(new DateTime(1970, 1, 1)).TotalSeconds;
                         item["ChainStatusLength"] = ch.ChainStatus.Length;
                         item["ChainApplicationPolicyCount"] = ch.ChainPolicy.ApplicationPolicy.Count;
                         item["ChainCertificatePolicyCount"] = ch.ChainPolicy.CertificatePolicy.Count;
