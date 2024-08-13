@@ -64,7 +64,11 @@ namespace WindowsAgent.Checks
                                     {
                                         if (installDate.GetType() == typeof(string))
                                         {
-                                            item["InstallDate"] = (int)DateTime.ParseExact((string)installDate, "yyyyMMdd", null).Subtract(new DateTime(1970, 1, 1)).TotalSeconds;
+                                            item["InstallDate"] = (long)DateTime.ParseExact((string)installDate, "yyyyMMdd", null).Subtract(new DateTime(1970, 1, 1)).TotalSeconds;
+                                        }
+                                        else if (installDate.GetType() == typeof(long))
+                                        {
+                                            item["InstallDate"] = (long)installDate;
                                         }
                                         else if (installDate.GetType() == typeof(int))
                                         {
