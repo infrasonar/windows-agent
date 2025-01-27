@@ -94,7 +94,24 @@ namespace WindowsAgent
                     {
                         try
                         {
-                            string body = Run().GetData();
+                            string body;
+                            try
+                            {
+                                body = Run().GetData();
+                            }
+                            catch (Exception ex)
+                            {
+                                body = CheckError.GetData(ex.Message);
+                                if (Config.IsDebug())
+                                {
+                                    Logger.Write(string.Format("Failed to run check ({0}): {1} {2}", this.Key(), ex.Message, ex.StackTrace), EventLogEntryType.Error, EventId.CheckError);
+                                }
+                                else
+                                {
+                                    Logger.Write(string.Format("Failed to run check ({0}): {1}", this.Key(), ex.Message), EventLogEntryType.Error, EventId.CheckError);
+                                }
+                            }
+                            
                             if (Config.IsLocalOnly())
                             {
                                 string tempPath = Path.GetTempPath();
@@ -112,11 +129,11 @@ namespace WindowsAgent
                         {
                             if (Config.IsDebug())
                             {
-                                Logger.Write(string.Format("Failed to run check ({0}): {1} {2}", this.Key(), ex.Message, ex.StackTrace), EventLogEntryType.Error, EventId.CheckError);
+                                Logger.Write(string.Format("Failed to write check ({0}): {1} {2}", this.Key(), ex.Message, ex.StackTrace), EventLogEntryType.Error, EventId.CheckWrite);
                             }
                             else
                             {
-                                Logger.Write(string.Format("Failed to run check ({0}): {1}", this.Key(), ex.Message), EventLogEntryType.Error, EventId.CheckError);
+                                Logger.Write(string.Format("Failed to write check ({0}): {1}", this.Key(), ex.Message), EventLogEntryType.Error, EventId.CheckWrite);
                             }
                         }
                     }).Start();

@@ -94,6 +94,7 @@
     <Compile Include="CheckResult.cs" />
     <Compile Include="CheckType.cs" />
     <Compile Include="Announce.cs" />
+    <Compile Include="CheckError.cs" />
     <Compile Include="DisabledChecks.cs" />
     <Compile Include="PerfomanceInfoData.cs" />
     <Compile Include="Logger.cs" />
