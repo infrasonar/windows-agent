@@ -76,6 +76,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Check.cs" />
+    <Compile Include="Checks\Heartbeat.cs" />
     <Compile Include="Checks\Netstat.cs" />
     <Compile Include="Checks\Certificate.cs" />
     <Compile Include="Checks\Disk.cs" />
@@ -93,6 +94,7 @@
     <Compile Include="CheckResult.cs" />
     <Compile Include="CheckType.cs" />
     <Compile Include="Announce.cs" />
+    <Compile Include="DisabledChecks.cs" />
     <Compile Include="PerfomanceInfoData.cs" />
     <Compile Include="Logger.cs" />
     <Compile Include="Config.cs" />

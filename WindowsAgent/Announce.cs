@@ -37,7 +37,7 @@ namespace WindowsAgent
 
             try
             {
-                string url = string.Format("{0}/asset/{1}?field=namae", Config.GetApiUrl(), Config.GetAssetId());
+                string url = string.Format("{0}/asset/{1}?field=name", Config.GetApiUrl(), Config.GetAssetId());
                 var request = new HttpRequestMessage(HttpMethod.Get, url);
 
                 using (var resp = await client.SendAsync(request))

@@ -84,36 +84,43 @@ namespace WindowsAgent
 
             while (true)
             {
-                new Thread(() =>
+                if (await DisabledChecks.IsDisabled(Key()))
                 {
-                    try
+                    Logger.Write(string.Format("Check {0} is disabled", Key()), EventLogEntryType.Information, EventId.None);
+                }
+                else
+                {
+                    new Thread(() =>
                     {
-                        string body = Run().GetData();
-                        if (Config.IsLocalOnly())
+                        try
                         {
-                            string tempPath = Path.GetTempPath();
-                            string fileName = Path.Combine(tempPath, string.Format("infrasonar-{0}-{1}.json", InfraSonarAgent.CollectorKey, this.Key()));
+                            string body = Run().GetData();
+                            if (Config.IsLocalOnly())
+                            {
+                                string tempPath = Path.GetTempPath();
+                                string fileName = Path.Combine(tempPath, string.Format("infrasonar-{0}-{1}.json", InfraSonarAgent.CollectorKey, Key()));
 
-                            File.WriteAllText(fileName, body);
-                            Logger.Write(string.Format("Data for check written to file: {0}", fileName), EventLogEntryType.Information, EventId.None);
+                                File.WriteAllText(fileName, body);
+                                Logger.Write(string.Format("Data for check written to file: {0}", fileName), EventLogEntryType.Information, EventId.None);
+                            }
+                            else
+                            {
+                                Task.Run(async () => await SendToHub(body)).Wait();
+                            }
                         }
-                        else
+                        catch (Exception ex)
                         {
-                            Task.Run(async () => await SendToHub(body)).Wait();
+                            if (Config.IsDebug())
+                            {
+                                Logger.Write(string.Format("Failed to run check ({0}): {1} {2}", this.Key(), ex.Message, ex.StackTrace), EventLogEntryType.Error, EventId.CheckError);
+                            }
+                            else
+                            {
+                                Logger.Write(string.Format("Failed to run check ({0}): {1}", this.Key(), ex.Message), EventLogEntryType.Error, EventId.CheckError);
+                            }
                         }
-                    }
-                    catch (Exception ex)
-                    {
-                        if (Config.IsDebug())
-                        {
-                            Logger.Write(string.Format("Failed to run check ({0}): {1} {2}", this.Key(), ex.Message, ex.StackTrace), EventLogEntryType.Error, EventId.CheckError);
-                        }
-                        else
-                        {
-                            Logger.Write(string.Format("Failed to run check ({0}): {1}", this.Key(), ex.Message), EventLogEntryType.Error, EventId.CheckError);
-                        }
-                    }
-                }).Start();
+                    }).Start();
+                }                
                 await Task.Delay(TimeSpan.FromMinutes(_interval));
             }
         }

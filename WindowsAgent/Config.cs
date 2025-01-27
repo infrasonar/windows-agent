@@ -1,5 +1,6 @@
 ﻿using Microsoft.Win32;
 using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 
 namespace WindowsAgent
@@ -12,6 +13,7 @@ namespace WindowsAgent
         static private readonly bool _localOnly = ReadlocalOnly();
         static private string _assetName = ReadAssetName();
         static private ulong _assetId = ReadAssetId();
+        static private long _disabledChecksCacheAge = ReadDisabledChecksCacheAge();
 
         private const string _APPKEY = @"Software\Cesbit\InfraSonarAgent";
         private const string _CHKKEY = @"Software\Cesbit\InfraSonarAgent\CheckInterval";
@@ -31,6 +33,10 @@ namespace WindowsAgent
                     if (key.GetValue("Token") == null)
                     {
                         key.SetValue("Token", string.Empty, RegistryValueKind.String);
+                    }
+                    if (key.GetValue("DisabledChecksCacheAge") == null)
+                    {
+                        key.SetValue("DisabledChecksCacheAge", 900, RegistryValueKind.DWord);
                     }
                 }
             }
@@ -107,6 +113,11 @@ namespace WindowsAgent
         static public bool HasToken()
         {
             return _authorization != null;
+        }
+
+        static public long DisabledChecksCacheAge()
+        {
+            return _disabledChecksCacheAge;
         }
 
         // Return the CheckInterval in Minutes.
@@ -217,6 +228,20 @@ namespace WindowsAgent
             }
             catch (Exception) { }
             return assetId;
+        }
+
+        static private long ReadDisabledChecksCacheAge()
+        {
+            long disabledChecksCacheAge = 900;
+            try
+            {
+                using (var key = Registry.LocalMachine.OpenSubKey(_APPKEY, false))
+                {
+                    disabledChecksCacheAge = Convert.ToInt64(key.GetValue("DisabledChecksCacheAge", 900).ToString());
+                }
+            }
+            catch (Exception) { }
+            return disabledChecksCacheAge;
         }
 
         static private bool ReadDebug()

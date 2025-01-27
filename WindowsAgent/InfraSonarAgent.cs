@@ -25,6 +25,7 @@ namespace WindowsAgent
         private static Checks.Netstat _netstatCheck = new Checks.Netstat();
         private static Checks.Disk _diskCheck = new Checks.Disk();
         private static Checks.Certificate _certificateCheck = new Checks.Certificate();
+        private static Checks.Heartbeat _heartbeatCheck = new Checks.Heartbeat();
 
         public InfraSonarAgent()
         {
@@ -97,6 +98,7 @@ namespace WindowsAgent
             _netstatCheck.Start();
             _diskCheck.Start();
             _certificateCheck.Start();
+            _heartbeatCheck.Start();
         }
 
         protected override void OnStop()
